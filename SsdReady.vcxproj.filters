@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{3f1d452c-474e-4282-bb72-29969e7c71ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{3302d996-ce6a-4c6c-b083-c7dc967f8900}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{f56b1a3f-c9de-4b7f-a532-17786f76bc67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{643ab4d9-459f-4e21-9c43-f0a8bfc95c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core Classes">
+      <UniqueIdentifier>{14020b69-3ce3-4165-a4dd-7b66883b672a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs">
+      <UniqueIdentifier>{f99eab8c-1993-42bc-ac74-509ba342ea44}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="process_name_resolver.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="drive_info.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="system_error.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="buffered_file.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="history_format.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="file_error.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="string_utils.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="settings_registry.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="runtime_settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="styled_button.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="process_list_ctrl.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="sortable_list_ctrl.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="monitoring_tree_ctrl.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="hyperlink_ctrl.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="application_core.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="app_log.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="mini_spy_manager.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="named_object.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="tree_item.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="folder_tree_item.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="resizable_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="about_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="options_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="processes_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="main_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ssd_ready_app.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="drive_size_combo_box.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="colored_list_box.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="drive_list_ctrl.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="process_statistics.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="process_write_statistics.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="drive_selector_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="log_viewer_dialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+
+    <ClCompile Include="dialog_base.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="system_error.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="buffered_file.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="file_error.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="string_utils.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="app_constants.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="build_version.h"><Filter>System</Filter></ClInclude>
+    <ClInclude Include="ui_statistics.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="minispy.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="settings_registry.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="runtime_settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="styled_button.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="process_list_ctrl.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="sortable_list_ctrl.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="monitoring_tree_ctrl.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="hyperlink_ctrl.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="application_core.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="app_log.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="history_format.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="mini_spy_manager.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="named_object.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="tree_item.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="file_tree_item.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="folder_tree_item.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="pending_write_event.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="resizable_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="about_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="options_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="processes_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="main_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ssd_ready_app.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="drive_size_combo_box.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="colored_list_box.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="drive_list_ctrl.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="process_name_resolver.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="drive_info.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="process_statistics.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="process_write_statistics.h">
+      <Filter>Core Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="drive_selector_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="log_viewer_dialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+
+    <ClInclude Include="dialog_base.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="drive_size_option.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\buy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\clear.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\config.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\help.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\measure.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\processes.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\SsdReady.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\start.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\stop.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tree-icons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\menu.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\drives.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\disk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\logo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\handy.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\SsdReady.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SsdReady.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="SsdReady.manifest">
+      <Filter>Resource Files</Filter>
+    </Manifest>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,375 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" agent="Codex" version="24.7.17" type="device">
+  <diagram id="ssdready-1" name="01 · System overview">
+    <mxGraphModel dx="1700" dy="1270" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1270" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="heading" value="01 · System overview" style="text;html=1;align=left;fontSize=32;fontStyle=1;fontColor=#162B40;" vertex="1" parent="1">
+          <mxGeometry x="35" y="25" width="1630" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Current implementation • processing emphasized; UI summarized • SsdReady / Win32 + MFC" style="text;html=1;align=left;fontSize=18;fontColor=#526478;" vertex="1" parent="1">
+          <mxGeometry x="35" y="83" width="1630" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="band-0" value="UI thread / presentation" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="40" y="135" width="1620" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="band-1" value="User-mode monitoring engine" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="40" y="435" width="1620" height="465" as="geometry" />
+        </mxCell>
+        <mxCell id="band-2" value="External systems and durable storage" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="40" y="950" width="1620" height="245" as="geometry" />
+        </mxCell>
+        <mxCell id="ui" value="&lt;b&gt;MainDialog + supporting dialogs&lt;/b&gt;&lt;br&gt;&lt;br&gt;Start / pause / clear; volume selection&lt;br&gt;Timer: totals, queue count, SSD estimates&lt;br&gt;Options, process statistics, log viewer" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="195" width="390" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="core" value="&lt;b&gt;ApplicationCore / application services&lt;/b&gt;&lt;br&gt;&lt;br&gt;Owns manager, settings and UI references&lt;br&gt;Driver service start / stop through SCM&lt;br&gt;Core() and Registry() global access" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="610" y="195" width="405" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="treeui" value="&lt;b&gt;MonitoringTreeCtrl / SortableListCtrl&lt;/b&gt;&lt;br&gt;&lt;br&gt;Model-backed display callbacks&lt;br&gt;Populate children when folders expand&lt;br&gt;PostMessage + redraw batching" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="195" width="470" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="rx" value="&lt;b&gt;RetrieveLogRecords thread&lt;/b&gt;&lt;br&gt;&lt;br&gt;Poll \SsdSpyPort; parse driver records&lt;br&gt;Filter write events; resolve PID names&lt;br&gt;Create owning PendingWriteEvent&lt;br&gt;Enqueue; optional raw debug logging" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="515" width="390" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="queue" value="&lt;b&gt;Owning batch queue&lt;/b&gt;&lt;br&gt;&lt;br&gt;deque of unique_ptr&amp;lt;EventBatch&amp;gt;&lt;br&gt;Batch: vector of unique_ptr events&lt;br&gt;Producer push_back / consumer pop_front&lt;br&gt;FIFO; mutex + condition variable" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="600" y="515" width="405" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="worker" value="&lt;b&gt;ProcessLogRecords thread&lt;/b&gt;&lt;br&gt;&lt;br&gt;Resolve volume path and file node&lt;br&gt;Optional process aggregation&lt;br&gt;Update file / ancestor / global totals&lt;br&gt;Delete consumed event" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="515" width="480" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="state" value="&lt;b&gt;Shared monitoring model&lt;/b&gt;&lt;br&gt;&lt;br&gt;File/folder tree + process statistics&lt;br&gt;Path cache, PID cache, drive list" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="600" y="750" width="405" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="persist" value="&lt;b&gt;LoadMonitoredItems / SaveMonitoredItems&lt;/b&gt;&lt;br&gt;&lt;br&gt;BufferedFile → File → Win32 I/O&lt;br&gt;Version 1 snapshot; recursive tree format" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2DE;strokeColor=#A27433;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="750" width="480" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="driver" value="&lt;b&gt;SsdSpy minifilter / FltMgr&lt;/b&gt;&lt;br&gt;&lt;br&gt;External driver: ssdspy.sys&lt;br&gt;FilterSendMessage / GetMiniSpyLog&lt;br&gt;Contract: minispy.h LOG_RECORD" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EDF1F5;strokeColor=#667789;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1015" width="390" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="os" value="&lt;b&gt;Windows / registry&lt;/b&gt;&lt;br&gt;&lt;br&gt;Process APIs, volumes, SCM, files&lt;br&gt;SettingsRegistry → InterfaceSettings&lt;br&gt;RuntimeSettings → data paths" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EDF1F5;strokeColor=#667789;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1015" width="405" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="disk" value="&lt;b&gt;Monitored.Files + diagnostic log&lt;/b&gt;&lt;br&gt;&lt;br&gt;%APPDATA%\CEZEO software\SsdReady&lt;br&gt;Aggregates: no per-event history&lt;br&gt;Debug: g:\ssdready-unprocessed.bin" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2DE;strokeColor=#A27433;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="1015" width="480" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="commands" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ui" target="core">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="bind control" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="core" target="treeui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="own event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rx" target="queue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-3" value="transfer ownership" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="queue" target="worker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-4" value="driver records" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="driver" target="rx">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-5" value="model update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="worker" target="state">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1390" y="720" />
+              <mxPoint x="802.5" y="720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-6" value="read / write model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="state" target="persist">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-7" value="snapshot I/O" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="persist" target="disk">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-8" value="WM_ITEMS_CHANGED" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=6 4;" edge="1" parent="1" source="state" target="treeui">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="520" y="807.5" />
+              <mxPoint x="520" y="405" />
+              <mxPoint x="1395" y="405" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="footer" value="Current source: application_core.*, mini_spy_manager.*, tree_item.*, folder_tree_item.*, file_tree_item.h, BufferedFile.*, File.*, minispy.h, MainDialog / MonitoringTreeCtrl. Diagram is descriptive, not a proposed redesign." style="text;html=1;align=left;fontSize=14;fontColor=#667789;" vertex="1" parent="1">
+          <mxGeometry x="35" y="1225" width="1630" height="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="ssdready-2" name="02 · Write-event processing">
+    <mxGraphModel dx="2490" dy="1590" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2490" pageHeight="1590" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="heading" value="02 · Write-event processing" style="text;html=1;align=left;fontSize=32;fontStyle=1;fontColor=#162B40;" vertex="1" parent="1">
+          <mxGeometry x="35" y="25" width="2420" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Two worker threads • full accepted-event path • branches, ownership and hot-path behavior" style="text;html=1;align=left;fontSize=18;fontColor=#526478;" vertex="1" parent="1">
+          <mxGeometry x="35" y="83" width="2420" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="band-0" value="Producer thread — MiniSpyManager::RetrieveLogRecords" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="150" width="2420" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="band-1" value="Consumer thread — MiniSpyManager::ProcessLogRecords" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="660" width="2420" height="440" as="geometry" />
+        </mxCell>
+        <mxCell id="poll" value="&lt;b&gt;1 · Poll driver port&lt;/b&gt;&lt;br&gt;&lt;br&gt;FilterSendMessage(GetMiniSpyLog)&lt;br&gt;256 KiB receive buffer&lt;br&gt;No records / error: Sleep(POLL_INTERVAL)&lt;br&gt;Invalid handle or &amp;gt;100 unexpected errors: initiate cleanup" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="65" y="225" width="355" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="parse" value="&lt;b&gt;2 · Validate record framing&lt;/b&gt;&lt;br&gt;&lt;br&gt;Check header, record length and batch bounds&lt;br&gt;Walk LOG_RECORD.Length entries&lt;br&gt;FILETAG: TranslateFileTag()&lt;br&gt;Untranslatable tags are skipped&lt;br&gt;Malformed record stops batch parsing" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="465" y="225" width="355" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="filter" value="&lt;b&gt;3 · Select accepted writes&lt;/b&gt;&lt;br&gt;&lt;br&gt;GetLogStatus() must be true&lt;br&gt;CallbackMajorId == IRP_MJ_WRITE&lt;br&gt;Accept when IRP_INPUT_OPERATION is clear OR path contains &amp;quot;$&amp;quot;&lt;br&gt;Status is received but not tested here&lt;br&gt;Other records are skipped" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="865" y="225" width="355" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="event" value="&lt;b&gt;4 · Build pending event&lt;/b&gt;&lt;br&gt;&lt;br&gt;AddTotalReaded(ReadDataLength)&lt;br&gt;new PendingWriteEvent&lt;br&gt;PID: DWORD; write size: DWORD64&lt;br&gt;Filename copied unless DoNotLogFiles&lt;br&gt;Read total is updated outside model lock" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1265" y="225" width="355" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="pid" value="&lt;b&gt;5 · Optional process name&lt;/b&gt;&lt;br&gt;&lt;br&gt;CollectProcessesInformation enabled?&lt;br&gt;GetProcessNameById(PID)&lt;br&gt;Linear runtimeProcess cache lookup&lt;br&gt;Cache miss: process/module APIs; fallback snapshot enumeration&lt;br&gt;Uses processed-model mutex" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1665" y="225" width="355" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="enqueue" value="&lt;b&gt;6 · Queue and debug log&lt;/b&gt;&lt;br&gt;&lt;br&gt;LockUnprocessedArrayAccess()&lt;br&gt;Add(event): queue takes ownership&lt;br&gt;If SSDREADY_UNPROCESSED_LOG_WRITE: SaveToLog() while holding lock&lt;br&gt;Raw File writes; six calls for nonempty names&lt;br&gt;Release queue mutex" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="2065" y="225" width="355" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="pop" value="&lt;b&gt;7 · Take one batch&lt;/b&gt;&lt;br&gt;&lt;br&gt;GetNextBatchToProcess(): lock queue&lt;br&gt;Move front batch, pop_front, unlock&lt;br&gt;Ownership transfers to consumer&lt;br&gt;Empty: wait on condition variable&lt;br&gt;Drain accepted batches during shutdown" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="65" y="735" width="355" height="315" as="geometry" />
+        </mxCell>
+        <mxCell id="volume" value="&lt;b&gt;8 · Resolve volume path&lt;/b&gt;&lt;br&gt;&lt;br&gt;DoNotLogFiles: skip path conversion&lt;br&gt;Otherwise VolumeToDriveName()&lt;br&gt;Match volume prefix against drive list&lt;br&gt;Uses drives mutex&lt;br&gt;Failure: skip file/global-byte updates; event is still counted and deleted" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="465" y="735" width="355" height="315" as="geometry" />
+        </mxCell>
+        <mxCell id="lookup" value="&lt;b&gt;9 · Resolve file/folder node&lt;/b&gt;&lt;br&gt;&lt;br&gt;Hold processed-model mutex&lt;br&gt;Skip this stage in totals-only mode&lt;br&gt;Full-path unordered_map cache lookup&lt;br&gt;Miss: GetFileAttributes + split path&lt;br&gt;Recursive child-name scan; create nodes&lt;br&gt;Cache path → tree pointer&lt;br&gt;New nodes PostMessage to UI tree" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="865" y="735" width="355" height="315" as="geometry" />
+        </mxCell>
+        <mxCell id="proc" value="&lt;b&gt;10 · Optional attribution&lt;/b&gt;&lt;br&gt;&lt;br&gt;ResolveProcess(): match process basename, case insensitive&lt;br&gt;Create CEProcess if absent&lt;br&gt;Add bytes to global process total&lt;br&gt;SetProcessWrite(): find/create node link by process_index&lt;br&gt;Skip when collection is disabled" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1265" y="735" width="355" height="315" as="geometry" />
+        </mxCell>
+        <mxCell id="aggregate" value="&lt;b&gt;11 · Update statistics&lt;/b&gt;&lt;br&gt;&lt;br&gt;TreeItem::AddWrite(bytes)&lt;br&gt;Own byte total + per-write 4 KiB rounding&lt;br&gt;Propagate cached totals to ancestors&lt;br&gt;Mark descriptions stale&lt;br&gt;AddTotalWritten(): global normal and rounded totals&lt;br&gt;Release processed-model mutex" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1665" y="735" width="355" height="315" as="geometry" />
+        </mxCell>
+        <mxCell id="release" value="&lt;b&gt;12 · Finalize batch&lt;/b&gt;&lt;br&gt;&lt;br&gt;Count each processed operation&lt;br&gt;Owned events destroyed with the batch&lt;br&gt;Return to GetNextBatchToProcess()&lt;br&gt;GUI insertion stays on the UI thread" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="2065" y="735" width="355" height="315" as="geometry" />
+        </mxCell>
+        <mxCell id="payload" value="&lt;b&gt;Event payload and lifetime&lt;/b&gt;&lt;br&gt;&lt;br&gt;PendingWriteEvent: CString filename + CString process name + DWORD PID + DWORD64 write size.&lt;br&gt;x64: object 32 B; queue slot 8 B; string buffers extra. Process-name CString storage may be shared.&lt;br&gt;Normal processing retains only aggregates. No timestamp, offset, file content or per-file event count is stored.&lt;br&gt;PID is used for name resolution / debug output; persisted process identity is a name-based index." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="65" y="1170" width="705" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="branches" value="&lt;b&gt;Configuration branches&lt;/b&gt;&lt;br&gt;&lt;br&gt;DoNotLogFiles: skip filenames, volume conversion, tree nodes and process totals; retain global write statistics.&lt;br&gt;CollectProcessesInformation: controls name resolution and per-process attribution.&lt;br&gt;GetLogStatus(): start/pause admission of driver records.&lt;br&gt;Unprocessed-log macros are currently enabled in pch.h; the raw log path is hardcoded." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF9E9;strokeColor=#A89053;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="875" y="1170" width="705" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="costs" value="&lt;b&gt;Current processing boundaries&lt;/b&gt;&lt;br&gt;&lt;br&gt;Each accepted write allocates an event and usually a full filename buffer.&lt;br&gt;PID/global-process/per-file process lookups use linear scans; first-seen files scan folder children.&lt;br&gt;Queue has no explicit capacity limit or backpressure. Full paths stay cached until ClearData().&lt;br&gt;Source: mini_spy_manager.cpp, pending_write_event.h, tree_item.cpp." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF9E9;strokeColor=#A89053;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1685" y="1170" width="705" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="poll" target="parse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="parse" target="filter">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="filter" target="event">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="event" target="pid">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pid" target="enqueue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pop" target="volume">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="volume" target="lookup">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="lookup" target="proc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="proc" target="aggregate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aggregate" target="release">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-10" value="asynchronous handoff through owning event queue" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#796094;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="enqueue" target="pop">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2242" y="615" />
+              <mxPoint x="242" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-11" value="repeat until cleanup" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=6 4;" edge="1" parent="1" source="release" target="pop">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2242" y="1080" />
+              <mxPoint x="242" y="1080" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="footer" value="Current source: application_core.*, mini_spy_manager.*, tree_item.*, folder_tree_item.*, file_tree_item.h, BufferedFile.*, File.*, minispy.h, MainDialog / MonitoringTreeCtrl. Diagram is descriptive, not a proposed redesign." style="text;html=1;align=left;fontSize=14;fontColor=#667789;" vertex="1" parent="1">
+          <mxGeometry x="35" y="1545" width="2420" height="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="ssdready-3" name="03 · Data model and persistence">
+    <mxGraphModel dx="2220" dy="1700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2220" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="heading" value="03 · Data model and persistence" style="text;html=1;align=left;fontSize=32;fontStyle=1;fontColor=#162B40;" vertex="1" parent="1">
+          <mxGeometry x="35" y="25" width="2150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Ownership, cross-references and exact version 1 storage layout • no individual event history in the normal snapshot" style="text;html=1;align=left;fontSize=18;fontColor=#526478;" vertex="1" parent="1">
+          <mxGeometry x="35" y="83" width="2150" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="band-0" value="In-memory state — MiniSpyManager" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="150" width="2150" height="715" as="geometry" />
+        </mxCell>
+        <mxCell id="band-1" value="Durable aggregate snapshot — SaveMonitoredItems / LoadMonitoredItems" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="935" width="2150" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="manager" value="&lt;b&gt;Manager / root state&lt;/b&gt;&lt;br&gt;&lt;br&gt;MANAGER_INFO: seven DWORD64 values&lt;br&gt;Operations, node count, read/write bytes&lt;br&gt;Rounded write bytes, last time, duration&lt;br&gt;Owns root FolderTreeItem&lt;br&gt;Owns process and drive arrays&lt;br&gt;Owns caches and event queue" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="230" width="465" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="node" value="&lt;b&gt;FileTreeItem / FolderTreeItem&lt;/b&gt;&lt;br&gt;&lt;br&gt;NamedObject: alias + cached description&lt;br&gt;Parent pointer and HTREEITEM: non-owning&lt;br&gt;Owns child nodes and process links&lt;br&gt;Counters: own bytes, rounded bytes, cached bytes including descendants&lt;br&gt;x64 object size: 136 B before allocations&lt;br&gt;Filename components reconstruct full paths" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="680" y="230" width="590" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="process" value="&lt;b&gt;Process statistics and node links&lt;/b&gt;&lt;br&gt;&lt;br&gt;CEProcess: basename, total bytes, size_t process_index; global array owns objects&lt;br&gt;ProcessWriteStatistics: bytes + size_t process_index&lt;br&gt;Links reference the global process array by index, not by owning pointer&lt;br&gt;Node link search and name lookup are linear&lt;br&gt;x64: CEProcess 40 B; ProcessWriteStatistics 16 B" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="230" width="660" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="paths" value="&lt;b&gt;Full-path and PID caches&lt;/b&gt;&lt;br&gt;&lt;br&gt;unordered_map&amp;lt;wstring, TreeItem*&amp;gt;&lt;br&gt;Key owns complete path; node pointer does not own&lt;br&gt;runtimeProcess owns PID/name/time entries&lt;br&gt;Path cache cleared by ClearData()&lt;br&gt;PID cache cleanup: entries older than 1 hour" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="595" width="465" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="owners" value="&lt;b&gt;Standard container ownership&lt;/b&gt;&lt;br&gt;&lt;br&gt;Tree children: vector of unique_ptr&lt;br&gt;Events: vector of unique_ptr per batch&lt;br&gt;Moving owners preserves object addresses&lt;br&gt;Drive sizes: fixed array of 14 values&lt;br&gt;UI borrows stable drive-size addresses" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="680" y="595" width="590" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-cache" value="&lt;b&gt;Derived state and UI references&lt;/b&gt;&lt;br&gt;&lt;br&gt;Cached subtree totals accelerate display&lt;br&gt;Descriptions become stale on AddWrite()&lt;br&gt;GetDisplayInformation formats on demand&lt;br&gt;HTREEITEM exists only for populated UI nodes&lt;br&gt;Tree model is complete even when UI children are not yet inserted" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="595" width="660" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="trigger" value="&lt;b&gt;Snapshot lifecycle&lt;/b&gt;&lt;br&gt;&lt;br&gt;Load during Install(), before worker startup&lt;br&gt;Save during shutdown after worker join&lt;br&gt;Process dialog command also saves under model lock&lt;br&gt;Location: user-data folder / Monitored.Files&lt;br&gt;Normal snapshot contains aggregates only" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2DE;strokeColor=#A27433;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1010" width="465" height="255" as="geometry" />
+        </mxCell>
+        <mxCell id="buffer" value="&lt;b&gt;BufferedFile → File → Win32&lt;/b&gt;&lt;br&gt;&lt;br&gt;Sequential 1 MiB buffer&lt;br&gt;ReadBlock / WriteBlock call ReadFile / WriteFile&lt;br&gt;Drain handles partial writes&lt;br&gt;Close drains final bytes; failure affects save result&lt;br&gt;ReadSize32 promotes DWORD → size_t&lt;br&gt;WriteSize32 rejects values above DWORD range" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2DE;strokeColor=#A27433;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="680" y="1010" width="590" height="255" as="geometry" />
+        </mxCell>
+        <mxCell id="format" value="&lt;b&gt;Version 1 file layout&lt;/b&gt;&lt;br&gt;&lt;br&gt;DWORD format version = 1&lt;br&gt;MANAGER_INFO: 56 bytes&lt;br&gt;DWORD process count&lt;br&gt;Processes: total[8] + index[4] + string&lt;br&gt;Root tree follows; recursively stored nodes&lt;br&gt;String: DWORD byte length + UTF-16 bytes" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2DE;strokeColor=#A27433;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="1010" width="660" height="255" as="geometry" />
+        </mxCell>
+        <mxCell id="record" value="&lt;b&gt;Each tree node on disk&lt;/b&gt;&lt;br&gt;&lt;br&gt;Non-root node: type[4] + object version[4] + name length[4] + name bytes.&lt;br&gt;Three byte totals[24] + link count[4] + links (12 B each) + child count[4] + child records.&lt;br&gt;Fixed overhead: 44 B per non-root node; root omits type (40 B). Process-link record: write total[8] + process index[4].&lt;br&gt;Reserve child/process arrays after reading counts; preserve existing on-disk DWORD boundaries." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2DE;strokeColor=#A27433;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1350" width="1060" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="diagnostic" value="&lt;b&gt;Separate raw-event diagnostic file&lt;/b&gt;&lt;br&gt;&lt;br&gt;g:\ssdready-unprocessed.bin; File, not BufferedFile&lt;br&gt;Record: write size[8] + PID[4] + process-name string + filename string.&lt;br&gt;Enabled by SSDREADY_UNPROCESSED_LOG and SSDREADY_UNPROCESSED_LOG_WRITE.&lt;br&gt;Does not serialize the same model as Monitored.Files; filenames containing &amp;quot;ssdready-unprocessed&amp;quot; are excluded from this log." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF9E9;strokeColor=#A89053;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="1350" width="860" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="owns root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="manager" target="node">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="process index" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="node" target="process">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="non-owning lookup" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=6 4;" edge="1" parent="1" source="paths" target="node">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="585" y="700" />
+              <mxPoint x="585" y="365" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-3" value="child / link ownership" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="owners" target="node">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-4" value="derived display state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=6 4;" edge="1" parent="1" source="node" target="ui-cache">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1350" y="365" />
+              <mxPoint x="1350" y="550" />
+              <mxPoint x="1760" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-5" value="load / save" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="trigger" target="buffer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-6" value="bytes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="buffer" target="format">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-7" value="recursive tree layout" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="format" target="record">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1760" y="1300" />
+              <mxPoint x="600" y="1300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="footer" value="Current source: application_core.*, mini_spy_manager.*, tree_item.*, folder_tree_item.*, file_tree_item.h, BufferedFile.*, File.*, minispy.h, MainDialog / MonitoringTreeCtrl. Diagram is descriptive, not a proposed redesign." style="text;html=1;align=left;fontSize=14;fontColor=#667789;" vertex="1" parent="1">
+          <mxGeometry x="35" y="1655" width="2150" height="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="ssdready-4" name="04 · Lifecycle and concurrency">
+    <mxGraphModel dx="2220" dy="1580" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2220" pageHeight="1580" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="heading" value="04 · Lifecycle and concurrency" style="text;html=1;align=left;fontSize=32;fontStyle=1;fontColor=#162B40;" vertex="1" parent="1">
+          <mxGeometry x="35" y="25" width="2150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Startup/shutdown order, lock scopes and cross-thread notifications • simplified presentation layer" style="text;html=1;align=left;fontSize=18;fontColor=#526478;" vertex="1" parent="1">
+          <mxGeometry x="35" y="83" width="2150" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="band-0" value="Application lifecycle — UI thread" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="150" width="2150" height="345" as="geometry" />
+        </mxCell>
+        <mxCell id="band-1" value="Synchronization domains — std::mutex + std::unique_lock" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="560" width="2150" height="415" as="geometry" />
+        </mxCell>
+        <mxCell id="band-2" value="UI notifications and diagnostics" style="rounded=1;arcSize=3;html=1;fillColor=#F5F7FA;strokeColor=#DCE3EB;align=left;verticalAlign=top;spacingTop=16;spacingLeft=20;fontSize=21;fontStyle=1;fontColor=#344C63;" vertex="1" parent="1">
+          <mxGeometry x="35" y="1040" width="2150" height="440" as="geometry" />
+        </mxCell>
+        <mxCell id="boot" value="&lt;b&gt;Application / main dialog startup&lt;/b&gt;&lt;br&gt;&lt;br&gt;SsdReadyApp initializes core and registry&lt;br&gt;ApplicationCore loads runtime/interface settings&lt;br&gt;MainDialog binds MonitoringTreeCtrl&lt;br&gt;Dialog calls manager Install()" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="65" y="230" width="450" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="install" value="&lt;b&gt;Manager Install()&lt;/b&gt;&lt;br&gt;&lt;br&gt;Load snapshot and populate root UI level&lt;br&gt;ApplicationCore starts/creates SsdSpy service&lt;br&gt;Connect \SsdSpyPort through FltMgr&lt;br&gt;Start retrieve + processing threads" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E9F4EF;strokeColor=#397D65;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="610" y="230" width="450" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="run" value="&lt;b&gt;Monitoring session&lt;/b&gt;&lt;br&gt;&lt;br&gt;Attach selected volumes; monitor writes&lt;br&gt;Start/pause changes log-admission flag&lt;br&gt;UI timer reads totals and updates estimates&lt;br&gt;ClearData resets model and caches" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1155" y="230" width="450" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="stop" value="&lt;b&gt;Dialog shutdown / Uninstall()&lt;/b&gt;&lt;br&gt;&lt;br&gt;Detach volumes; remove UI tree reference&lt;br&gt;Set cleanup flag; join both workers&lt;br&gt;Close thread/port handles&lt;br&gt;Stop/remove driver service; save snapshot" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=17;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1700" y="230" width="450" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="qlock" value="&lt;b&gt;Pending batch queue mutex&lt;/b&gt;&lt;br&gt;&lt;br&gt;Producer: push_back + queued count&lt;br&gt;Consumer: move front + pop_front&lt;br&gt;Condition variable notifies new batches&lt;br&gt;UI count is protected by queue mutex&lt;br&gt;Consumer unlocks before model updates" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="65" y="635" width="650" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="mlock" value="&lt;b&gt;Processed-model mutex&lt;/b&gt;&lt;br&gt;&lt;br&gt;Consumer: tree lookup, process links, byte totals&lt;br&gt;Producer: GetProcessNameById() cache/API work&lt;br&gt;UI: tree expansion/change handling; explicit save&lt;br&gt;ClearData() and CleanUpProcessList()&lt;br&gt;Snapshot load precedes workers; shutdown save follows worker join." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="785" y="635" width="650" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="dlock" value="&lt;b&gt;Drives mutex&lt;/b&gt;&lt;br&gt;&lt;br&gt;VolumeToDriveName() reads drive mappings&lt;br&gt;ListDevices() updates drive array&lt;br&gt;UI selection/attach/detach operations use drive access lock&lt;br&gt;Independent lock domain; model locking does not replace drive locking." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F2ECFA;strokeColor=#796094;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1505" y="635" width="650" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="notify" value="&lt;b&gt;Tree notification boundary&lt;/b&gt;&lt;br&gt;&lt;br&gt;New model node marks parent children changed&lt;br&gt;NotifyItemsChanged(): atomic coalescing flag&lt;br&gt;PostMessage(WM_APP + 21)&lt;br&gt;UI handler locks model; visits represented nodes&lt;br&gt;Expansion inserts immediate children once&lt;br&gt;UpdateBatch suppresses redraw only on change" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF0FA;strokeColor=#45658B;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="65" y="1115" width="650" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="logs" value="&lt;b&gt;AppLog / SystemError / FileError&lt;/b&gt;&lt;br&gt;&lt;br&gt;Shared diagnostic log guarded by its own mutex&lt;br&gt;Workers append status and error messages&lt;br&gt;PostMessage(WM_APP + 20) refreshes viewer&lt;br&gt;Viewer copies messages on the UI thread&lt;br&gt;File errors carry filename + system error text&lt;br&gt;Raw event file is a separate diagnostic path" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF9E9;strokeColor=#A89053;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="785" y="1115" width="650" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="bounds" value="&lt;b&gt;Configuration and scope&lt;/b&gt;&lt;br&gt;&lt;br&gt;SSDREADY_ONLY_UI bypasses driver monitoring&lt;br&gt;SSDREADY_BENCHMARK_PROCESSING selects offline processing benchmark path&lt;br&gt;Runtime flags control capture/file/process detail&lt;br&gt;Cleanup/admission flags are BOOL fields; not every global counter update is under model mutex&lt;br&gt;Driver internals are external; diagram shows only the checked-in interface contract" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF9E9;strokeColor=#A89053;strokeWidth=1.5;fontColor=#20354A;fontFamily=Segoe UI;fontSize=18;align=left;verticalAlign=top;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="1505" y="1115" width="650" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="boot" target="install">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="install" target="run">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#526478;fontFamily=Segoe UI;fontSize=15;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="run" target="stop">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="footer" value="Current source: application_core.*, mini_spy_manager.*, tree_item.*, folder_tree_item.*, file_tree_item.h, BufferedFile.*, File.*, minispy.h, MainDialog / MonitoringTreeCtrl. Diagram is descriptive, not a proposed redesign." style="text;html=1;align=left;fontSize=14;fontColor=#667789;" vertex="1" parent="1">
+          <mxGeometry x="35" y="1535" width="2150" height="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

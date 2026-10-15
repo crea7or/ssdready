@@ -1,0 +1,363 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian (Russia) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\SsdReady.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\SsdReady.ico"
+
+IDI_ICON_STOP           ICON                    "res\\stop.ico"
+
+IDI_ICON_CLEAR          ICON                    "res\\clear.ico"
+
+IDI_ICON_SETTINGS       ICON                    "res\\config.ico"
+
+IDI_ICON_HELP           ICON                    "res\\help.ico"
+
+IDI_ICON_MEASURE        ICON                    "res\\measure.ico"
+
+IDI_ICON_START          ICON                    "res\\start.ico"
+
+IDI_ICON_PROCESSES      ICON                    "res\\processes.ico"
+
+IDI_ICON_MENU           ICON                    "res\\menu.ico"
+
+IDI_ICON_DRIVES         ICON                    "res\\drives.ico"
+
+IDI_ICON_BUY            ICON                    "res\\buy.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 241, 175
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "About SsdReady"
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    CTEXT           "SsdReady Version 1.4",IDC_STATIC_BUILD,49,93,134,12,SS_NOPREFIX | SS_CENTERIMAGE
+    CTEXT           "Copyright (C) 2017 CEZEO software Ltd.",IDC_STATIC,49,111,134,12,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,49,67,136,20,WS_GROUP
+    CONTROL         IDB_BITMAP_LOGO,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE,25,12,187,43
+    CTEXT           "http://www.cezeo.com",IDC_STATIC_CORP_LINK,48,128,134,12,SS_CENTERIMAGE
+    CTEXT           "http://www.ssdready.com",IDC_STATIC_SSD_LINK,49,145,134,12,SS_CENTERIMAGE
+END
+
+IDD_SSDREADY_DIALOG DIALOGEX 0, 0, 337, 276
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SsdReady"
+FONT 8, "Tahoma", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      " Start",IDC_BUTTON_STARTSTOP,4,4,50,30
+    CONTROL         "Tree1",IDC_TREE_FILES,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | TVS_FULLROWSELECT | TVS_NONEVENHEIGHT | WS_HSCROLL | WS_TABSTOP,4,138,328,120
+    LTEXT           "Total writes:",IDC_STATIC_00_00,4,38,56,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Aligned to (4k):",IDC_STATIC_00_01,4,56,56,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_TOTAL_WRITTEN,62,38,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_TOTAL_WRITTEN_WORST,62,56,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Total operations:",IDC_STATIC_02_00,228,38,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Total files:",IDC_STATIC_02_01,228,56,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_TOTAL_OPERATIONS,290,38,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_TOTAL_FILES,290,56,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Monitoring time:",IDC_STATIC_02_02,228,74,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Writes/day:",IDC_STATIC_01_00,114,38,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_MONITORING_TIME,290,74,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_WRITES_DAY,176,38,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Writes/day (4k):",IDC_STATIC_01_01,114,56,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_WRITES_DAYW,176,56,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Total read:",IDC_STATIC_00_02,4,74,56,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_TOTAL_READ,62,74,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Write/read raito:",IDC_STATIC_01_02,114,74,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_WRITE_READ_RAITO,176,74,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    PUSHBUTTON      "About",IDC_BUTTON_BUY,227,4,50,30
+    PUSHBUTTON      "Calculate",IDC_BUTTON_ESIMATE,60,4,50,30
+    LTEXT           "",IDC_STATIC_LEFT_STATUSBAR,4,260,156,12,SS_CENTERIMAGE
+    PUSHBUTTON      "Options",IDC_BUTTON_OPTIONS,171,4,50,30
+    LTEXT           "Files list:",IDC_STATIC_10_00,4,122,122,12,SS_CENTERIMAGE
+    LTEXT           "",IDC_STATIC_EST,290,92,46,12,SS_NOTIFY | SS_CENTERIMAGE
+    LTEXT           "Approx ssd life:",IDC_STATIC_02_03,228,92,60,12,SS_NOTIFY | SS_CENTERIMAGE
+    PUSHBUTTON      "Processes",IDC_BUTTON_PROCESSES,115,4,50,30
+    PUSHBUTTON      "Menu",IDC_BUTTON_MENU,283,4,50,30
+    LTEXT           "SSD capacity:",IDC_STATIC_00_03,4,92,56,12,SS_NOTIFY | SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC_DIVIDER,"Static",SS_GRAYFRAME,4,113,328,1
+    COMBOBOX        IDC_COMBO_SIZES,60,92,48,56,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Processing:",IDC_STATIC_PROCESSING_RATE_LABEL,160,260,39,12,SS_CENTERIMAGE
+    RTEXT           "0 items/s",IDC_STATIC_RIGHT_STATUSBAR,202,260,48,12,SS_CENTERIMAGE
+    RTEXT           "Max:",IDC_STATIC_MAX_PROCESSING_RATE_LABEL,261,260,16,12,SS_CENTERIMAGE
+    RTEXT           "0 items/s",IDC_STATIC_MAX_PROCESSING_RATE,280,260,52,12,SS_CENTERIMAGE
+END
+
+IDD_DIALOG_OPTIONS DIALOGEX 0, 0, 233, 200
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Application Options"
+FONT 8, "Tahoma", 400, 0, 0xCC
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,22,172,60,20
+    PUSHBUTTON      "Cancel",IDCANCEL,150,172,60,20
+    CONTROL         "Collect names of writing processes",IDC_CHECK_PROCESS,
+                    "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,12,168,12
+    CONTROL         "Do not log file information",IDC_CHECK_DONOTLOG_FILES,
+                    "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,31,168,12
+    CONTROL         "Auto start SsdReady (does not work in Win8 & Win10)",IDC_CHECK_AUTOSTARTLOGGIN,
+                    "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,49,192,12
+    CONTROL         "Show only tray icon",IDC_CHECK_TRAYICON,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,66,192,12
+    PUSHBUTTON      "Help",IDC_BUTTON_HELP,85,172,60,20
+    CONTROL         "Start in minimized window",IDC_CHECK_STARTMINIMIZED,
+                    "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,84,192,12
+    CONTROL         "Auto expand folders in files tree",IDC_CHECK_AUTOEXPAND,
+                    "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,103,168,12
+    CONTROL         "Sort items in tree by size written ",IDC_CHECK_SORTBYSIZE,
+                    "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,121,168,12
+END
+
+IDD_DIALOG_PROCESSES DIALOGEX 0, 0, 221, 248
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Processes List"
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,72,220,80,20
+    CONTROL         "",IDC_LIST_PROCESS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_TABSTOP,8,28,204,180
+    LTEXT           "",IDC_STATIC_ITEM,8,8,204,14,SS_CENTERIMAGE | SS_WORDELLIPSIS
+END
+
+IDD_DIALOG_DRIVES DIALOGEX 0, 0, 217, 216
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Monitored Drives"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,74,186,70,20
+    CONTROL         "",IDC_LIST_MONITORING_DRIVES,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | WS_TABSTOP,10,27,196,145
+    LTEXT           "Drives to monitor:",IDC_STATIC_ITEM,12,10,193,14,SS_CENTERIMAGE | SS_WORDELLIPSIS
+END
+
+IDD_DIALOG_LOG DIALOGEX 0, 0, 309, 244
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Log Viewer"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,119,216,70,20
+    LISTBOX         IDC_LIST_LOG,8,28,292,172,NOT LBS_NOTIFY | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | LBS_NOSEL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Program log:",IDC_STATIC_LOG_LABEL,8,8,135,14,SS_CENTERIMAGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 168
+    END
+
+    IDD_SSDREADY_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 330
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 269
+    END
+
+    IDD_DIALOG_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 226
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_DIALOG_PROCESSES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 241
+    END
+
+    IDD_DIALOG_DRIVES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 209
+    END
+
+    IDD_DIALOG_LOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_FILESYSTEM   BITMAP                  "res\\tree-icons.bmp"
+
+IDB_BITMAP_DRIVES       BITMAP                  "res\\disk.bmp"
+
+IDB_BITMAP_LOGO         BITMAP                  "res\\logo.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSOR_HAND         CURSOR                  "res\\handy.cur"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "SsdReady.manifest"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_SYSTEM_TRAY MENU
+BEGIN
+    POPUP "Context Menu"
+    BEGIN
+        MENUITEM "Show SsdReady Window",        ID_CONTEXTMENU_SHOWSSDREADYWINDOW
+        MENUITEM "About SsdReady",              ID_CONTEXTMENU_ABOUTSSDREADY
+        MENUITEM SEPARATOR
+        MENUITEM "Close",                       ID_CONTEXTMENU_EXIT
+    END
+END
+
+IDR_MENU_MAIN MENU
+BEGIN
+    POPUP "Context Menu"
+    BEGIN
+        MENUITEM "Select Drives To Monitor",    32780
+        MENUITEM "Show App Log",                32783
+        MENUITEM "Clear Collected Data",        IDM_MENU_CLEARCOLLECTEDDATA
+        MENUITEM SEPARATOR
+        MENUITEM "Help",                        IDM_MENU_HELP
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SSDREADY_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Russian (Russia) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\SsdReady.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

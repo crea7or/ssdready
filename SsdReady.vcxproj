@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A51CA214-391E-4A33-A86B-8CA1B9AD0933}</ProjectGuid>
+    <RootNamespace>SsdReady</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.61030.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\x64\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <IncludePath>$(FrameworkSdkDir)include\shared\;$(FrameworkSdkDir)include\um\;$(IncludePath)</IncludePath>
+    <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
+    <EmbedManifest>false</EmbedManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\x64\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <IncludePath>$(FrameworkSdkDir)include\shared\;$(FrameworkSdkDir)include\um\;$(IncludePath)</IncludePath>
+    <ReferencePath>$(VC_ReferencesPath_x64)</ReferencePath>
+    <EmbedManifest>false</EmbedManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Debug/SsdReady.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SsdReady.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0419</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ManifestFile>$(IntDir)$(TargetFileName).embed.manifest</ManifestFile>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <GenerateMapFile>false</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+      <Profile>false</Profile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Release/SsdReady.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SsdReady.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0419</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ManifestFile>$(IntDir)$(TargetFileName).embed.manifest</ManifestFile>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+      <Profile>false</Profile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="drive_size_combo_box.cpp" />
+    <ClCompile Include="colored_list_box.cpp" />
+    <ClCompile Include="drive_selector_dialog.cpp" />
+    <ClCompile Include="drive_list_ctrl.cpp" />
+    <ClCompile Include="drive_info.cpp" />
+    <ClCompile Include="process_name_resolver.cpp" />
+    <ClCompile Include="system_error.cpp" />
+    <ClCompile Include="buffered_file.cpp" />
+    <ClCompile Include="history_format.cpp" />
+    <ClCompile Include="file.cpp" />
+    <ClCompile Include="file_error.cpp" />
+    <ClCompile Include="string_utils.cpp" />
+    <ClCompile Include="log_viewer_dialog.cpp" />
+    <ClCompile Include="process_statistics.cpp" />
+    <ClCompile Include="process_write_statistics.cpp" />
+
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="settings_registry.cpp" />
+    <ClCompile Include="interface_settings.cpp" />
+    <ClCompile Include="runtime_settings.cpp" />
+    <ClCompile Include="styled_button.cpp" />
+    <ClCompile Include="dialog_base.cpp" />
+    <ClCompile Include="sortable_list_ctrl.cpp" />
+    <ClCompile Include="process_list_ctrl.cpp" />
+    <ClCompile Include="resizable_dialog.cpp" />
+    <ClCompile Include="monitoring_tree_ctrl.cpp" />
+    <ClCompile Include="hyperlink_ctrl.cpp" />
+    <ClCompile Include="about_dialog.cpp" />
+    <ClCompile Include="options_dialog.cpp" />
+    <ClCompile Include="processes_dialog.cpp" />
+    <ClCompile Include="ssd_ready_app.cpp" />
+    <ClCompile Include="main_dialog.cpp" />
+    <ClCompile Include="application_core.cpp" />
+    <ClCompile Include="app_log.cpp" />
+    <ClCompile Include="mini_spy_manager.cpp" />
+    <ClCompile Include="named_object.cpp" />
+    <ClCompile Include="tree_item.cpp" />
+    <ClCompile Include="folder_tree_item.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="drive_size_combo_box.h" />
+    <ClInclude Include="colored_list_box.h" />
+    <ClInclude Include="drive_size_option.h" />
+    <ClInclude Include="drive_info.h" />
+    <ClInclude Include="process_name_resolver.h" />
+    <ClInclude Include="drive_selector_dialog.h" />
+    <ClInclude Include="drive_list_ctrl.h" />
+    <ClInclude Include="system_error.h" />
+    <ClInclude Include="buffered_file.h" />
+    <ClInclude Include="file.h" />
+    <ClInclude Include="file_error.h" />
+    <ClInclude Include="string_utils.h" />
+    <ClInclude Include="log_viewer_dialog.h" />
+    <ClInclude Include="process_statistics.h" />
+    <ClInclude Include="process_write_statistics.h" />
+    <ClInclude Include="app_constants.h" />
+    <ClInclude Include="ui_statistics.h" />
+    <ClInclude Include="build_version.h" />
+
+    <ClInclude Include="minispy.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="settings_registry.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="interface_settings.h" />
+    <ClInclude Include="runtime_settings.h" />
+    <ClInclude Include="styled_button.h" />
+    <ClInclude Include="dialog_base.h" />
+    <ClInclude Include="sortable_list_ctrl.h" />
+    <ClInclude Include="process_list_ctrl.h" />
+    <ClInclude Include="resizable_dialog.h" />
+    <ClInclude Include="monitoring_tree_ctrl.h" />
+    <ClInclude Include="hyperlink_ctrl.h" />
+    <ClInclude Include="about_dialog.h" />
+    <ClInclude Include="options_dialog.h" />
+    <ClInclude Include="processes_dialog.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ssd_ready_app.h" />
+    <ClInclude Include="main_dialog.h" />
+    <ClInclude Include="application_core.h" />
+    <ClInclude Include="app_log.h" />
+    <ClInclude Include="history_format.h" />
+    <ClInclude Include="mini_spy_manager.h" />
+    <ClInclude Include="named_object.h" />
+    <ClInclude Include="tree_item.h" />
+    <ClInclude Include="file_tree_item.h" />
+    <ClInclude Include="folder_tree_item.h" />
+    <ClInclude Include="pending_write_event.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\buy.ico" />
+    <Image Include="res\clear.ico" />
+    <Image Include="res\config.ico" />
+    <Image Include="res\disk.bmp" />
+    <Image Include="res\drives.ico" />
+    <Image Include="res\help.ico" />
+    <Image Include="res\logo.bmp" />
+    <Image Include="res\measure.ico" />
+    <Image Include="res\menu.ico" />
+    <Image Include="res\processes.ico" />
+    <Image Include="res\SsdReady.ico" />
+    <Image Include="res\start.ico" />
+    <Image Include="res\stop.ico" />
+    <Image Include="res\tree-icons.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\handy.cur" />
+    <None Include="res\SsdReady.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SsdReady.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="SsdReady.manifest" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="SsdReady.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

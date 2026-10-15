@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1270" viewBox="0 0 1700 1270">
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#526478"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<text x="35" y="57" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="700" fill="#162B40">01 · System overview</text>
+<text x="35" y="101" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#526478">Current implementation • processing emphasized; UI summarized • SsdReady / Win32 + MFC</text>
+<rect x="40" y="135" width="1620" height="250" rx="14" fill="#F5F7FA" stroke="#DCE3EB" stroke-width="1.5"/>
+<text x="60" y="171" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="700" fill="#344C63">UI thread / presentation</text>
+<rect x="40" y="435" width="1620" height="465" rx="14" fill="#F5F7FA" stroke="#DCE3EB" stroke-width="1.5"/>
+<text x="60" y="471" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="700" fill="#344C63">User-mode monitoring engine</text>
+<rect x="40" y="950" width="1620" height="245" rx="14" fill="#F5F7FA" stroke="#DCE3EB" stroke-width="1.5"/>
+<text x="60" y="986" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="700" fill="#344C63">External systems and durable storage</text>
+<polyline points="460,272.5 610,272.5" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="494.5" y="252.5" width="81.0" height="21" fill="white"/>
+<text x="498.5" y="267.5" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">commands</text>
+<polyline points="1015,272.5 1160,272.5" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1043.0" y="252.5" width="89.0" height="21" fill="white"/>
+<text x="1047.0" y="267.5" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">bind control</text>
+<polyline points="460,602.5 600,602.5" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="492.0" y="582.5" width="76.0" height="21" fill="white"/>
+<text x="496.0" y="597.5" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">own event</text>
+<polyline points="1005,602.5 1150,602.5" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1012.5" y="582.5" width="130.0" height="21" fill="white"/>
+<text x="1016.5" y="597.5" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">transfer ownership</text>
+<polyline points="265.0,1015 265.0,690" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="215.5" y="832.5" width="99.0" height="21" fill="white"/>
+<text x="219.5" y="847.5" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">driver records</text>
+<polyline points="1390.0,690 1390,720 802.5,720 802.5,750" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1045.25" y="700.0" width="102.0" height="21" fill="white"/>
+<text x="1049.25" y="715.0" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">model update</text>
+<polyline points="1005,807.5 1150,807.5" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1011.5" y="787.5" width="132.0" height="21" fill="white"/>
+<text x="1015.5" y="802.5" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">read / write model</text>
+<polyline points="1390.0,865 1390.0,1015" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1344.0" y="920.0" width="92.0" height="21" fill="white"/>
+<text x="1348.0" y="935.0" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">snapshot I/O</text>
+<polyline points="600,807.5 520,807.5 520,405 1395,405 1395.0,350" fill="none" stroke="#526478" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="6 4"/>
+<rect x="878.5" y="385.0" width="158.0" height="21" fill="white"/>
+<text x="882.5" y="400.0" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#20354A">WM_ITEMS_CHANGED</text>
+<rect x="70" y="195" width="390" height="155" rx="12" fill="#EAF0FA" stroke="#45658B" stroke-width="1.5"/>
+<text x="86" y="226" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">MainDialog + supporting dialogs</text>
+<text x="86" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="86" y="269" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Start / pause / clear; volume selection</text>
+<text x="86" y="291" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Timer: totals, queue count, SSD estimates</text>
+<text x="86" y="313" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Options, process statistics, log viewer</text>
+<rect x="610" y="195" width="405" height="155" rx="12" fill="#EAF0FA" stroke="#45658B" stroke-width="1.5"/>
+<text x="626" y="226" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">ApplicationCore / application services</text>
+<text x="626" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="626" y="269" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Owns manager, settings and UI references</text>
+<text x="626" y="291" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Driver service start / stop through SCM</text>
+<text x="626" y="313" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Core() and Registry() global access</text>
+<rect x="1160" y="195" width="470" height="155" rx="12" fill="#EAF0FA" stroke="#45658B" stroke-width="1.5"/>
+<text x="1176" y="226" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">MonitoringTreeCtrl / SortableListCtrl</text>
+<text x="1176" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="1176" y="269" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Model-backed display callbacks</text>
+<text x="1176" y="291" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Populate children when folders expand</text>
+<text x="1176" y="313" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">PostMessage + redraw batching</text>
+<rect x="70" y="515" width="390" height="175" rx="12" fill="#E9F4EF" stroke="#397D65" stroke-width="1.5"/>
+<text x="86" y="546" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">RetrieveLogRecords thread</text>
+<text x="86" y="567" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="86" y="589" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Poll \SsdSpyPort; parse driver records</text>
+<text x="86" y="611" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Filter write events; resolve PID names</text>
+<text x="86" y="633" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Create owning PendingWriteEvent</text>
+<text x="86" y="655" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Enqueue; optional raw debug logging</text>
+<rect x="600" y="515" width="405" height="175" rx="12" fill="#F2ECFA" stroke="#796094" stroke-width="1.5"/>
+<text x="616" y="546" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">Owning event queue</text>
+<text x="616" y="567" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="616" y="589" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">deque of owning event batches</text>
+<text x="616" y="611" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Batch: vector&lt;unique_ptr&lt;Event&gt;&gt;</text>
+<text x="616" y="633" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Producer push_back / consumer pop_front</text>
+<text x="616" y="655" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">FIFO; mutex + condition variable</text>
+<rect x="1150" y="515" width="480" height="175" rx="12" fill="#E9F4EF" stroke="#397D65" stroke-width="1.5"/>
+<text x="1166" y="546" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">ProcessLogRecords thread</text>
+<text x="1166" y="567" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="1166" y="589" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Resolve volume path and file node</text>
+<text x="1166" y="611" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Optional process aggregation</text>
+<text x="1166" y="633" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Update file / ancestor / global totals</text>
+<text x="1166" y="655" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Delete consumed event</text>
+<rect x="600" y="750" width="405" height="115" rx="12" fill="#F2ECFA" stroke="#796094" stroke-width="1.5"/>
+<text x="616" y="781" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">Shared monitoring model</text>
+<text x="616" y="802" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="616" y="824" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">File/folder tree + process statistics</text>
+<text x="616" y="846" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Path cache, PID cache, drive list</text>
+<rect x="1150" y="750" width="480" height="115" rx="12" fill="#FFF2DE" stroke="#A27433" stroke-width="1.5"/>
+<text x="1166" y="781" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">LoadMonitoredItems / SaveMonitoredItems</text>
+<text x="1166" y="802" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="1166" y="824" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">BufferedFile → File → Win32 I/O</text>
+<text x="1166" y="846" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Version 1 snapshot; recursive tree format</text>
+<rect x="70" y="1015" width="390" height="145" rx="12" fill="#EDF1F5" stroke="#667789" stroke-width="1.5"/>
+<text x="86" y="1046" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">SsdSpy minifilter / FltMgr</text>
+<text x="86" y="1067" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="86" y="1089" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">External driver: ssdspy.sys</text>
+<text x="86" y="1111" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">FilterSendMessage / GetMiniSpyLog</text>
+<text x="86" y="1133" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Contract: minispy.h LOG_RECORD</text>
+<rect x="600" y="1015" width="405" height="145" rx="12" fill="#EDF1F5" stroke="#667789" stroke-width="1.5"/>
+<text x="616" y="1046" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">Windows / registry</text>
+<text x="616" y="1067" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="616" y="1089" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Process APIs, volumes, SCM, files</text>
+<text x="616" y="1111" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">SettingsRegistry → InterfaceSettings</text>
+<text x="616" y="1133" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">RuntimeSettings → data paths</text>
+<rect x="1150" y="1015" width="480" height="145" rx="12" fill="#FFF2DE" stroke="#A27433" stroke-width="1.5"/>
+<text x="1166" y="1046" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#20354A">Monitored.Files + diagnostic log</text>
+<text x="1166" y="1067" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A"></text>
+<text x="1166" y="1089" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">%APPDATA%\CEZEO software\SsdReady</text>
+<text x="1166" y="1111" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Aggregates: no per-event history</text>
+<text x="1166" y="1133" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#20354A">Debug: g:\ssdready-unprocessed.bin</text>
+<text x="35" y="1241" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#667789">Source-grounded architecture • current implementation • editable in diagrams.net / draw.io</text>
+</svg>
