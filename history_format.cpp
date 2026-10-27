@@ -11,6 +11,8 @@
 #include <span>
 #include <utility>
 
+#include "file_tree_item.h"
+
 namespace {
 constexpr DWORD kVersion = 2;
 constexpr DWORD kMagic = 0x32524853;  // "SHR2", little endian.

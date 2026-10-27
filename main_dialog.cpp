@@ -22,7 +22,8 @@ static char THIS_FILE[] = __FILE__;
 
 namespace {
 constexpr std::uint64_t kEnduranceCycles = 600;
-}
+UINT kTaskbarCreatedMessage = RegisterWindowMessageW(L"TaskbarCreated");
+}  // namespace
 
 MainDialog::MainDialog(CWnd* parent /*=nullptr*/) : ResizableDialog(MainDialog::kDialogId, parent) {
   // Note that LoadIcon does not require a subsequent DestroyIcon in Win32
@@ -47,6 +48,8 @@ void MainDialog::DoDataExchange(CDataExchange* exchange) {
 
 BEGIN_MESSAGE_MAP(MainDialog, ResizableDialog)
 ON_WM_DESTROY()
+ON_WM_CLOSE()
+ON_REGISTERED_MESSAGE(kTaskbarCreatedMessage, &MainDialog::OnTaskbarCreated)
 ON_BN_CLICKED(IDC_BUTTON_STARTSTOP, OnButtonStartStop)
 ON_WM_TIMER()
 ON_BN_CLICKED(IDC_BUTTON_BUY, OnBnClickedButtonBuy)
@@ -77,6 +80,7 @@ BOOL MainDialog::OnInitDialog() {
   processes_.SetIcon(IDI_ICON_PROCESSES);
   menu_.SetIcon(IDI_ICON_MENU);
 
+  ChangeWindowMessageFilter(kTaskbarCreatedMessage, MSGFLT_ADD);
   Tray(NIM_ADD, Core()->GetMainIcon(), L"SsdReady");
 
 #pragma region Sizes Combobox
@@ -98,14 +102,20 @@ BOOL MainDialog::OnInitDialog() {
 
   std::size_t selected_size = 0;
   const auto volumes = GetVolumes();
-  if (volumes && !volumes->empty() && volumes->front().volume_size > 0) {
-    const auto actual_size = volumes->front().volume_size;
-    selected_size = drive_sizes_.size() - 1;
-    for (std::size_t index = 0; index < drive_sizes_.size(); ++index) {
-      if (drive_sizes_[index].GetSize() >= actual_size) {
-        selected_size = index;
-        break;
+  wchar_t windows_directory[MAX_PATH]{};
+  const auto system_drive = GetWindowsDirectoryW(windows_directory, MAX_PATH) ? windows_directory[0] : L'C';
+  if (volumes) {
+    for (const auto& drive : *volumes) {
+      if (drive.drive_letter[0] != system_drive || drive.volume_size == 0)
+        continue;
+      selected_size = drive_sizes_.size() - 1;
+      for (std::size_t index = 0; index < drive_sizes_.size(); ++index) {
+        if (drive_sizes_[index].GetSize() >= drive.volume_size) {
+          selected_size = index;
+          break;
+        }
       }
+      break;
     }
   }
   auto* settings = Core()->GetInterfaceSettings();
@@ -141,12 +151,11 @@ BOOL MainDialog::OnInitDialog() {
 }
 
 void MainDialog::OnOK() {
-  // WTF? Close on ENTER
+  // Enter does not close the monitor.
 }
 
 void MainDialog::OnCancel() {
-  // WTF? Close on ESC
-  ResizableDialog::OnCancel();
+  // Escape must not terminate a monitoring session.
 }
 
 void MainDialog::OnDestroy() {
@@ -162,11 +171,8 @@ void MainDialog::CloseApp() {
     auto lock = Core()->GetManager()->LockDrives();
     const auto volumes = GetVolumes();
     if (volumes) {
-      Core()->GetInterfaceSettings()->selected_drives_.Empty();
       for (auto& drive : *volumes) {
         if (drive.instances > 0) {
-          if (drive.HasDriveLetter())
-            Core()->GetInterfaceSettings()->selected_drives_ += drive.drive_letter.data();
           Core()->GetManager()->DetachDeviceFromFilter(drive);
         }
       }
@@ -252,25 +258,7 @@ void MainDialog::OnTimer(UINT_PTR timer_id) {
   }
   SetDlgItemText(IDC_STATIC_WRITE_READ_RAITO, formatted_value);
 
-  if ((write_per_day > 0) && (monitored_seconds > 60 * 5)) {
-    write_per = estimated_endurance_bytes_ / write_per_day;
-
-    double estimated_time;
-    if (write_per < 365)  // year
-    {
-      if (write_per < 30) {
-        formatted_value.Format(L"%d days", (DWORD)write_per);
-      } else {
-        estimated_time = double(write_per) / 30.4375;
-        formatted_value.Format(L"%.02g months", estimated_time);
-      }
-    } else {
-      estimated_time = double(write_per) / 365;
-      formatted_value.Format(L"%.02g years", estimated_time);
-    }
-  } else {
-    formatted_value = L"Calculating";
-  }
+  formatted_value = ui_statistics::LifetimeText(estimated_endurance_bytes_, rounded_bytes, monitored_seconds);
   SetDlgItemText(IDC_STATIC_EST, formatted_value);
 
   if (Core()->GetManager()->GetCleanUpStatus()) {
@@ -292,6 +280,7 @@ void MainDialog::OnTimer(UINT_PTR timer_id) {
   if (tree_update_counter_ == 0) {
     tree_update_counter_ = 3;
     if (Core()->GetManager()->GetLogStatus()) {
+      tree_ctrl_.NotifyItemsChanged();
       tree_ctrl_.Invalidate(FALSE);
     }
   } else {
@@ -382,7 +371,7 @@ void MainDialog::OnBnClickedButtonClearData() {
 }
 
 void MainDialog::OnBnClickedButtonHelp() {
-  ShellExecute(nullptr, L"open", L"http://www.ssdready.com/help/?inref=ssdready", nullptr, nullptr, SW_SHOWNORMAL);
+  ShellExecute(nullptr, L"open", L"https://www.ssdready.com/help/?inref=ssdready", nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 void MainDialog::OnBnClickedButtonBuy() {
@@ -398,7 +387,7 @@ void MainDialog::OnBnClickedButtonEstimate() {
   GetDlgItemText(IDC_STATIC_WRITES_DAYW, written);
 
   written.Replace(L" ", L"&msr=");
-  written = L"http://www.ssdready.com/measure/?inref=ssdready&value=" + written;
+  written = L"https://www.ssdready.com/measure/?inref=ssdready&value=" + written;
 
   ShellExecute(nullptr, L"open", written, nullptr, nullptr, SW_SHOWNORMAL);
 }
@@ -563,7 +552,7 @@ INT_PTR MainDialog::OnToolHitTest(CPoint point, TOOLINFO* tool_info) const {
     switch (i_hit) {
       case IDC_STATIC_EST:
       case IDC_STATIC_02_03:
-        tooltip = L"SSD life based on aligned writes per day, selected size and average life of TLC drive";
+        tooltip = L"Lifetime estimate using 4 KiB-rounded writes/day, selected capacity and an assumed 600 write cycles";
         break;
       case IDC_COMBO_SIZES:
       case IDC_STATIC_00_03:
@@ -571,11 +560,11 @@ INT_PTR MainDialog::OnToolHitTest(CPoint point, TOOLINFO* tool_info) const {
         break;
       case IDC_STATIC_00_01:
       case IDC_STATIC_TOTAL_WRITTEN_WORST:
-        tooltip = L"Amount of written data aligned to 4096 bytes (the minimum possible for SSD)";
+        tooltip = L"Per-operation writes rounded to 4 KiB; an estimate, not physical NAND writes";
         break;
       case IDC_STATIC_01_01:
       case IDC_STATIC_WRITES_DAYW:
-        tooltip = L"Amount of written data aligned to 4096 bytes (the minimum possible for SSD) per day";
+        tooltip = L"Per-day estimate with each write rounded to 4 KiB; not physical NAND writes";
         break;
       case IDC_STATIC_00_00:
       case IDC_STATIC_TOTAL_WRITTEN:
@@ -614,4 +603,13 @@ INT_PTR MainDialog::OnToolHitTest(CPoint point, TOOLINFO* tool_info) const {
     }
   }
   return i_hit;
+}
+
+void MainDialog::OnClose() {
+  ResizableDialog::OnCancel();
+}
+
+LRESULT MainDialog::OnTaskbarCreated(WPARAM, LPARAM) {
+  Tray(NIM_ADD, Core()->GetMainIcon(), L"SsdReady");
+  return 0;
 }

@@ -34,7 +34,7 @@ class FakeBackend : public Resolver::Backend {
 
   Resolver::ProcessHandle running{CreateEvent(nullptr, TRUE, FALSE, nullptr)};
   CString executable = L"first.exe";
-  Resolver::Snapshot snapshot_names{{4, CString(L"System")}};
+  Resolver::Snapshot snapshot_names{{41, CString(L"System")}};
   std::size_t queries = 0;
   std::size_t snapshots = 0;
 
@@ -74,6 +74,10 @@ bool TestCachePolicy() {
   Resolver resolver(backend);
   const auto start = TimePoint{} + std::chrono::hours(1);
   CString name;
+  for (int second = 0; second < 10; ++second)
+    resolver.Resolve(4, name, start + std::chrono::seconds(second));
+  if (!Check(name == L"System" && backend.queries == 0 && backend.snapshots == 0, "System PID must not query or enumerate processes."))
+    return false;
   resolver.Resolve(42, name, start);
   if (!Check(name == L"first.exe", "Direct resolution failed."))
     return false;
@@ -82,7 +86,7 @@ bool TestCachePolicy() {
   if (!Check(backend.queries == 1 && backend.snapshots == 0, "Cache hits repeated OS queries."))
     return false;
 
-  resolver.Resolve(4, name, start);
+  resolver.Resolve(41, name, start);
   if (!Check(name == L"System", "Snapshot fallback discarded the executable name."))
     return false;
   for (int i = 0; i < 1000; ++i)
@@ -107,8 +111,8 @@ bool TestCachePolicy() {
   resolver.Resolve(98, name, start + std::chrono::seconds(1));
   if (!Check(name == L"late.exe" && backend.snapshots == 2, "A late lookup extended the stale snapshot's lifetime."))
     return false;
-  backend.snapshot_names[4] = L"reused-snapshot-pid.exe";
-  resolver.Resolve(4, name, start + std::chrono::seconds(2));
+  backend.snapshot_names[41] = L"reused-snapshot-pid.exe";
+  resolver.Resolve(41, name, start + std::chrono::seconds(2));
   if (!Check(name == L"reused-snapshot-pid.exe", "Snapshot names did not refresh after PID reuse."))
     return false;
 
@@ -130,7 +134,7 @@ bool TestCachePolicy() {
   if (!Check(ProcessNameResolverTestPeer::Count(resolver) == 0, "Owner-thread maintenance did not apply the clear request."))
     return false;
   const auto before = backend.snapshots;
-  resolver.Resolve(4, name, start + std::chrono::seconds(31));
+  resolver.Resolve(41, name, start + std::chrono::seconds(31));
   if (!Check(backend.snapshots == before + 1, "Clear retained the fallback snapshot."))
     return false;
   resolver.Resolve(42, name, start + std::chrono::seconds(31));

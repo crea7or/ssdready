@@ -3,6 +3,7 @@
 // clang-format on
 #include "folder_tree_item.h"
 
+#include "file_tree_item.h"
 #include "monitoring_tree_ctrl.h"
 
 namespace {
@@ -16,29 +17,34 @@ std::wstring FolderTreeItem::NameKey(LPCTSTR name) {
 }
 
 TreeItem* FolderTreeItem::FindChild(LPCTSTR name) {
-  if (!children_by_name_ && children_.size() < kIndexedChildCount) {
-    for (const auto& child : children_)
+  if (!contents_)
+    return nullptr;
+  if (!contents_->index && contents_->children.size() < kIndexedChildCount) {
+    for (const auto& child : contents_->children)
       if (child->CompareAlias(name))
         return child.get();
     return nullptr;
   }
-  if (!children_by_name_) {
+  if (!contents_->index) {
     auto index = std::make_unique<ChildIndex>();
-    index->reserve(children_.size());
-    for (const auto& child : children_)
+    index->reserve(contents_->children.size());
+    for (const auto& child : contents_->children)
       index->emplace(NameKey(child->GetAlias()), child.get());
-    children_by_name_ = std::move(index);
+    contents_->index = std::move(index);
   }
-  const auto found = children_by_name_->find(NameKey(name));
-  return found == children_by_name_->end() ? nullptr : found->second;
+  const auto found = contents_->index->find(NameKey(name));
+  return found == contents_->index->end() ? nullptr : found->second;
 }
 
 TreeItem* FolderTreeItem::GetItemByPath(CStringArray* parts, int index, BOOL is_file) {
   if (index >= parts->GetSize())
     return this;
+  const bool was_file = GetObjectType() == TreeItemType::kFile;
   auto* child = FindChild(parts->GetAt(index));
   if (!child)
     child = AddNewItem(parts->GetAt(index), is_file && index + 1 == parts->GetSize());
+  if (was_file && GetObjectType() == TreeItemType::kFolder)
+    Core()->GetManager()->RemoveFileCount();
   return child->GetItemByPath(parts, index + 1, is_file);
 }
 
@@ -51,17 +57,20 @@ TreeItem* FolderTreeItem::AddNewItem(LPCTSTR name, BOOL is_file) {
   child->SetAlias(name);
   child->SetParent(this);
   auto* result = child.get();
-  children_.push_back(std::move(child));
+  if (!contents_)
+    contents_ = std::make_unique<Contents>();
+  contents_->children.push_back(std::move(child));
   // Roll back ownership if updating the existing index cannot allocate.
-  if (children_by_name_) {
+  if (contents_->index) {
     try {
-      children_by_name_->emplace(NameKey(name), result);
+      contents_->index->emplace(NameKey(name), result);
     } catch (...) {
-      children_.pop_back();
+      contents_->children.pop_back();
       throw;
     }
   }
-  Core()->GetManager()->AddFileCount();
+  if (is_file)
+    Core()->GetManager()->AddFileCount();
   if (auto* control = Core()->GetTreeControl()) {
     MarkTreeChildrenChanged();
     control->NotifyItemsChanged();
@@ -70,8 +79,7 @@ TreeItem* FolderTreeItem::AddNewItem(LPCTSTR name, BOOL is_file) {
 }
 
 void FolderTreeItem::Clear() {
-  children_by_name_.reset();
-  children_.clear();
+  contents_.reset();
   TreeItem::Clear();
 }
 
@@ -79,10 +87,25 @@ void FolderTreeItem::TakeContents(FolderTreeItem&& source) {
   const auto handle = GetTreeItem();
   *this = std::move(source);
   SetTreeItem(handle);
-  for (const auto& child : children_)
+  for (const auto& child : GetChildren())
     child->SetParent(this);
 }
 
 int FolderTreeItem::GetImage() const {
   return parent_ && parent_->GetTreeItem() == TVI_ROOT ? 0 : 1;
+}
+
+const TreeItem::Children& FolderTreeItem::GetChildren() const {
+  static const Children empty;
+  return contents_ ? contents_->children : empty;
+}
+
+void FolderTreeItem::ReplaceChildren(Children children) {
+  if (children.empty()) {
+    contents_.reset();
+  } else {
+    auto contents = std::make_unique<Contents>();
+    contents->children = std::move(children);
+    contents_ = std::move(contents);
+  }
 }

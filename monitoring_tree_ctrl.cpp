@@ -4,6 +4,8 @@
 // clang-format on
 #include "monitoring_tree_ctrl.h"
 
+#include <utility>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -75,6 +77,7 @@ void MonitoringTreeCtrl::SortChildrenIfNeeded(HTREEITEM parent) {
 }
 
 void MonitoringTreeCtrl::OnGetDisplayInformation(NMHDR* header, LRESULT* result) {
+  auto lock = Core()->GetManager()->LockData();
   TV_DISPINFO* tv_disp_info = (TV_DISPINFO*)header;
   TV_ITEM* item = &tv_disp_info->item;
   TreeItem* contact_list_item = reinterpret_cast<TreeItem*>(item->lParam);
@@ -128,6 +131,11 @@ void MonitoringTreeCtrl::NotifyItemsChanged() {
   }
 }
 
+void MonitoringTreeCtrl::RefreshSortOrder() {
+  resort_all_ = true;
+  NotifyItemsChanged();
+}
+
 void MonitoringTreeCtrl::OnItemExpanding(NMHDR* header, LRESULT* result) {
   LPNMTREEVIEW notification = reinterpret_cast<LPNMTREEVIEW>(header);
   if (notification->action == TVE_EXPAND) {
@@ -144,6 +152,7 @@ void MonitoringTreeCtrl::OnItemExpanding(NMHDR* header, LRESULT* result) {
 }
 
 void MonitoringTreeCtrl::OnItemDeleted(NMHDR* header, LRESULT* result) {
+  auto lock = Core()->GetManager()->LockData();
   const auto* notification = reinterpret_cast<NMTREEVIEW*>(header);
   auto* item = reinterpret_cast<TreeItem*>(notification->itemOld.lParam);
   if (item)
@@ -157,15 +166,18 @@ LRESULT MonitoringTreeCtrl::OnItemsChanged(WPARAM, LPARAM) {
   {
     auto lock = Core()->GetManager()->LockData();
     update_posted_.store(false);
-    Core()->GetManager()->GetRootFolder()->AddToTreeCtrl();
-    Core()->GetManager()->GetRootFolder()->TakeTreeChildrenChanged();
+    auto* root = Core()->GetManager()->GetRootFolder();
+    const bool force = std::exchange(resort_all_, false);
+    if (!root->TakeTreeChildrenChanged() && !force)
+      return 0;
+    root->AddToTreeCtrl();
     BOOL autoExpand = Core()->GetInterfaceSettings()->auto_expand_folders_ && !Core()->IsStartingUp();
     // Walk only nodes already represented in the control, not the entire model.
     for (HTREEITEM handle = GetRootItem(); handle != nullptr;) {
       TreeItem* item = reinterpret_cast<TreeItem*>(GetItemData(handle));
       BOOL changed = item->TakeTreeChildrenChanged();
       BOOL expanded = (GetItemState(handle, TVIS_EXPANDED) & TVIS_EXPANDED) != 0;
-      if (changed) {
+      if (changed || force) {
         TVITEM state = {};
         state.mask = TVIF_CHILDREN;
         state.hItem = handle;
@@ -182,7 +194,7 @@ LRESULT MonitoringTreeCtrl::OnItemsChanged(WPARAM, LPARAM) {
         if (autoExpand && !expanded && children)
           expand.push_back(handle);
       }
-      HTREEITEM next = GetChildItem(handle);
+      HTREEITEM next = (changed || force) ? GetChildItem(handle) : nullptr;
       while (next == nullptr && handle != nullptr) {
         next = GetNextSiblingItem(handle);
         handle = GetParentItem(handle);

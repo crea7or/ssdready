@@ -73,6 +73,8 @@ class MainDialog : public ResizableDialog {
   void OnOK() override;
   void OnCancel() override;
   afx_msg void OnDestroy();
+  afx_msg void OnClose();
+  afx_msg LRESULT OnTaskbarCreated(WPARAM, LPARAM);
   afx_msg void OnButtonStartStop();
   afx_msg void OnTimer(UINT_PTR timer_id);
   afx_msg void OnBnClickedButtonClearData();

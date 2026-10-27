@@ -23,6 +23,8 @@ not describe the licensing of this open-source repository.
 - Save monitoring history between runs using a compact, checksummed version 2
   format; existing version 1 histories remain readable.
 - Use the system tray and application log to follow monitoring and driver status.
+- Optionally start monitoring at sign-in using a per-user, elevated scheduled
+  task. Enable this in Options while running as administrator.
 
 The lifetime figure is an estimate based on workload and assumed endurance.
 Filesystem write totals and the 4 KiB approximation do not measure physical NAND
@@ -103,6 +105,11 @@ New saves use version 2. Loading version 1 does not change the original file;
 the next successful save migrates it. Older version 1-only applications cannot
 read version 2 files. See [history format details](docs/history-format.md).
 
+An explicit empty drive selection is preserved across restarts; legacy defaults
+still select all eligible drives. The application log keeps its latest 4,096
+messages. Historical file details remain retained until you clear collected
+data; enable **Do not log file information** for long-running totals-only use.
+
 To remove the driver, close SsdReady and run from an elevated PowerShell:
 
 ```powershell
@@ -126,6 +133,8 @@ Initial configuration downloads the pinned Google Benchmark dependency. See
 [benchmark instructions](benchmarks/README.md) for workload sizes, repetitions,
 cache modes, history-format measurements, and test coverage. Simulated worker
 tests do not install the driver or validate live kernel-driver operation.
+See the [October code audit](docs/code-audit-2026-10.md) for confirmed findings,
+implemented fixes, and the remaining startup/retention and driver-contract work.
 
 ## Repository layout
 

@@ -55,7 +55,13 @@ void LogViewerDialog::RecalculateLayout() {
 
 void LogViewerDialog::RefreshLog() {
   CStringArray messages;
-  Core()->GetLog()->CopyLog(messages, displayed_count_);
+  INT_PTR retained_first = 0;
+  Core()->GetLog()->CopyLog(messages, displayed_count_, &retained_first);
+  if (retained_first != displayed_first_) {
+    Core()->GetLog()->CopyLog(messages, 0, &retained_first);
+    list_box_.ResetContent();
+    displayed_first_ = displayed_count_ = retained_first;
+  }
   // CopyLog releases its mutex before any calls into the window controls.
   if (messages.IsEmpty())
     return;

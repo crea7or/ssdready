@@ -27,13 +27,13 @@ BOOL InterfaceSettings::SaveSettings() {
   const auto run = RegistrySection::Open(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
   if (!run)
     return FALSE;
-  if (!autostart_session_)
-    return run.DeleteValue(L"SsdReady");
   const CString executable = RuntimeSettings::GetExecutablePath();
   if (executable.IsEmpty())
     return FALSE;
-  const CString command = L"\"" + executable + L"\"";
-  return run.WriteString(L"SsdReady", command);
+  if (!autostart_handler_(autostart_session_, executable))
+    return FALSE;
+  // Migrate away from the Run entry, which cannot launch requireAdministrator.
+  return run.DeleteValue(L"SsdReady");
 }
 
 BOOL InterfaceSettings::LoadSettings() {

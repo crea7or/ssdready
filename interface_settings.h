@@ -2,12 +2,16 @@
 
 #include <atomic>
 
+#include "autostart_task.h"
 #include "settings.h"
 
 class InterfaceSettings : public Settings {
  public:
 
-  InterfaceSettings() : Settings(L"Interface Settings") {
+  using AutostartHandler = BOOL (*)(bool, LPCWSTR);
+
+  explicit InterfaceSettings(AutostartHandler handler = ConfigureAutostartTask)
+      : Settings(L"Interface Settings"), autostart_handler_(handler) {
   }
 
   BOOL SaveSettings() override;
@@ -23,4 +27,14 @@ class InterfaceSettings : public Settings {
   bool sort_tree_by_write_size_ = true;
   int selected_disk_size_ = -1;
   CString selected_drives_;
+  // Legacy empty means all drives. A non-letter sentinel means explicitly none.
+  static constexpr LPCWSTR kNoSelectedDrives = L"-";
+
+  bool IsDriveSelected(LPCWSTR letter) const {
+    return selected_drives_.IsEmpty() || selected_drives_.Find(letter) != -1;
+  }
+
+ private:
+
+  AutostartHandler autostart_handler_;
 };

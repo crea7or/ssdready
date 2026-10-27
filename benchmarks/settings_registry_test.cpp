@@ -159,10 +159,22 @@ void TestRegistryReadsAndOwnership(HKEY root) {
         "Read-only handles reject writes without changing values");
 }
 
+bool task_enabled = false;
+bool task_failure = false;
+CString task_executable;
+
+BOOL ConfigureTestTask(bool enabled, LPCWSTR executable) {
+  task_enabled = enabled;
+  task_executable = executable;
+  if (task_failure)
+    SetLastError(ERROR_ACCESS_DENIED);
+  return !task_failure;
+}
+
 void TestSettingsAndAutostart(HKEY root, HKEY machine_root) {
   SettingsRegistry registry(root, L"Software\\CEZEO software\\SsdReady");
   RegistryBinding binding(registry);
-  InterfaceSettings settings;
+  InterfaceSettings settings(ConfigureTestTask);
   Check(settings.collect_process_information_ && !settings.do_not_log_files_ && settings.sort_tree_by_write_size_ &&
             settings.selected_disk_size_ == -1 && !settings.tray_icon_,
         "Defaults exist before loading settings");
@@ -178,14 +190,25 @@ void TestSettingsAndAutostart(HKEY root, HKEY machine_root) {
             settings.start_minimized_ && settings.auto_expand_folders_ && !settings.sort_tree_by_write_size_ &&
             settings.selected_disk_size_ == 3 && settings.selected_drives_ == L"C:D:",
         "Load legacy values and normalize BOOLs");
+  settings.selected_drives_ = InterfaceSettings::kNoSelectedDrives;
+  Check(!settings.IsDriveSelected(L"C:") && !settings.IsDriveSelected(L"D:"),
+        "Explicitly no drives differs from legacy all-drives selection");
+  settings.selected_drives_.Empty();
+  Check(settings.IsDriveSelected(L"C:"), "Legacy empty drive selection still means all drives");
+  settings.selected_drives_ = L"C:D:";
+  const auto legacy_run = RegistrySection::Open(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+  Check(legacy_run.WriteString(L"SsdReady", L"legacy.exe"), "Create isolated legacy autostart entry");
   settings.autostart_session_ = true;
   Check(settings.SaveSettings(), "Save settings and enable isolated autostart");
   const auto run = RegistrySection::Open(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run");
-  const CString command = L"\"" + RuntimeSettings::GetExecutablePath() + L"\"";
-  Check(run.GetString(L"SsdReady") == command, "Autostart quotes the actual executable path");
+  Check(task_enabled && task_executable == RuntimeSettings::GetExecutablePath(), "Elevated autostart receives the exact executable path");
+  Check(run.GetString(L"SsdReady", L"missing") == L"missing", "Legacy Run autostart is removed");
+  task_failure = true;
+  Check(!settings.SaveSettings() && GetLastError() == ERROR_ACCESS_DENIED, "Scheduled task failure reaches the caller");
+  task_failure = false;
   Check(legacy.GetString(L"m_csLanguage") == L"English", "Unused language setting remains intact in the registry");
   settings.autostart_session_ = false;
-  Check(settings.SaveSettings() && run.GetString(L"SsdReady", L"missing") == L"missing", "Disable isolated autostart");
+  Check(settings.SaveSettings() && !task_enabled && run.GetString(L"SsdReady", L"missing") == L"missing", "Disable isolated autostart");
   Check(settings.SaveSettings(), "Saving disabled autostart repeatedly succeeds");
   settings.selected_disk_size_ = -1;
   Check(settings.SaveSettings() && legacy.GetInt(L"m_intSelectedDiskSize", 0) == 0xffffffff, "Preserve negative disk sentinel");

@@ -9,6 +9,7 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -35,8 +36,7 @@ static_assert(sizeof(MonitoringStatistics) == 56, "Preserve version 1 manager st
 class MiniSpyManager {
  public:
 
-  using EventPtr = std::unique_ptr<PendingWriteEvent>;
-  using EventBatch = std::vector<EventPtr>;
+  using EventBatch = std::vector<PendingWriteEvent>;
   using EventBatchPtr = std::unique_ptr<EventBatch>;
   static constexpr DWORD kBufferSize = 262144;
   static constexpr ULONG kInputOperation = 0x40;
@@ -62,8 +62,8 @@ class MiniSpyManager {
   BOOL SaveMonitoredItems();
   BOOL LoadMonitoredItems();
 
-  [[nodiscard]] std::unique_lock<std::mutex> LockData() {
-    return std::unique_lock<std::mutex>(data_mutex_);
+  [[nodiscard]] std::unique_lock<std::recursive_mutex> LockData() {
+    return std::unique_lock<std::recursive_mutex>(data_mutex_);
   }
 
   [[nodiscard]] std::unique_lock<std::mutex> LockDrives() {
@@ -107,6 +107,11 @@ class MiniSpyManager {
 
   void AddFileCount() {
     ++statistics_.items;
+  }
+
+  void RemoveFileCount() {
+    if (statistics_.items)
+      --statistics_.items;
   }
 
   BOOL GetCleanUpStatus() const {
@@ -160,9 +165,22 @@ class MiniSpyManager {
   std::uint64_t rate_sample_operations_ = 0;
   double processed_items_per_second_ = 0;
   double max_processed_items_per_second_ = 0;
-  std::mutex data_mutex_;
+  // Native tree callbacks can re-enter the model on the UI thread while a
+  // tree insertion/sort already holds this lock. Queue/drive locks stay plain.
+  std::recursive_mutex data_mutex_;
   std::mutex drives_mutex_;
-  std::unordered_map<std::wstring, TreeItem*> items_by_path_;
+
+  struct PathHash {
+    using is_transparent = void;
+
+    std::size_t operator()(std::wstring_view path) const {
+      return std::hash<std::wstring_view>{}(path);
+    }
+  };
+
+  std::unordered_map<std::wstring, TreeItem*, PathHash, std::equal_to<>> items_by_path_;
+  std::chrono::steady_clock::time_point last_driver_warning_{};
+  std::uint64_t driver_warning_records_ = 0;
   ProcessStatisticsStore process_statistics_;
   std::atomic<DriveInfoList*> new_volumes_ptr_{nullptr};
   DriveInfoListPtr volumes_ptr_;

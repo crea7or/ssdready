@@ -32,6 +32,7 @@ class MonitoringTreeCtrl : public CTreeCtrl {
 
   BOOL AddModelItem(TreeItem* item);
   void NotifyItemsChanged();
+  void RefreshSortOrder();
   TreeItem* GetSelectedModelItem();
   // Only labels and item icons activate a model; expansion buttons do not.
   TreeItem* GetModelItemAt(CPoint point);
@@ -43,6 +44,7 @@ class MonitoringTreeCtrl : public CTreeCtrl {
   std::atomic<bool> update_posted_{false};
   unsigned update_depth_ = 0;
   bool redraw_suspended_ = false;
+  bool resort_all_ = false;
   static constexpr UINT kItemsChangedMessage = WM_APP + 21;
   void EnableBufferedDrawing();
   void NoteTreeChange();

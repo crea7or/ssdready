@@ -160,7 +160,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,12,168,12
     CONTROL         "Do not log file information",IDC_CHECK_DONOTLOG_FILES,
                     "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,31,168,12
-    CONTROL         "Auto start SsdReady (does not work in Win8 & Win10)",IDC_CHECK_AUTOSTARTLOGGIN,
+    CONTROL         "Auto start SsdReady at sign-in",IDC_CHECK_AUTOSTARTLOGGIN,
                     "Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,49,192,12
     CONTROL         "Show only tray icon",IDC_CHECK_TRAYICON,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,28,66,192,12
     PUSHBUTTON      "Help",IDC_BUTTON_HELP,85,172,60,20

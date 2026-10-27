@@ -23,7 +23,7 @@ set(APP_SOURCES
   string_utils.cpp named_object.cpp process_statistics.cpp process_write_statistics.cpp
   sortable_list_ctrl.cpp process_list_ctrl.cpp
   folder_tree_item.cpp monitoring_tree_ctrl.cpp app_log.cpp
-  interface_settings.cpp runtime_settings.cpp settings_registry.cpp)
+  autostart_task.cpp interface_settings.cpp runtime_settings.cpp settings_registry.cpp)
 list(TRANSFORM APP_SOURCES PREPEND "${APP_ROOT}/")
 add_library(benchmark_runtime STATIC ${APP_SOURCES} ${APP_ROOT}/application_core.cpp benchmark_workload.cpp)
 target_include_directories(benchmark_runtime PUBLIC "${APP_ROOT}" "${CMAKE_CURRENT_LIST_DIR}")

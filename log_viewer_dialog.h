@@ -23,6 +23,7 @@ class LogViewerDialog : public ResizableDialog {
   StyledButton ok_;
   ColoredListBox list_box_;
   INT_PTR displayed_count_ = 0;
+  INT_PTR displayed_first_ = 0;
   CSize client_size_{};
   void RefreshLog();
 

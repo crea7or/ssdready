@@ -1,19 +1,15 @@
 #pragma once
 
-#include "tree_item.h"
+#include "folder_tree_item.h"
 
-class FileTreeItem : public TreeItem {
+class FileTreeItem : public FolderTreeItem {
  public:
 
   TreeItemType GetObjectType() const override {
-    return TreeItemType::kFile;
+    return GetChildrenCount() ? TreeItemType::kFolder : TreeItemType::kFile;
   }
 
   int GetImage() const override {
-    return 2;
-  }
-
-  TreeItem* GetItemByPath(CStringArray*, int, BOOL) override {
-    return this;
+    return GetObjectType() == TreeItemType::kFile ? 2 : FolderTreeItem::GetImage();
   }
 };

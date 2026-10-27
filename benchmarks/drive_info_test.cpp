@@ -70,11 +70,11 @@ int main(int argc, char** argv) {
   if (!AfxWinInit(GetModuleHandle(nullptr), nullptr, GetCommandLine(), 0))
     return 1;
   MiniSpyManager manager;
-  if (manager.UpdateVolumes(nullptr) || !manager.UpdateVolumes(Snapshot(L'C')) || manager.UpdateVolumes(Snapshot(L'D')))
+  if (manager.UpdateVolumes(nullptr) || !manager.UpdateVolumes(Snapshot(L'C')) || !manager.UpdateVolumes(Snapshot(L'D')))
     return 1;
   if (!Resolve(manager, nullptr, L"#:\\unknown.file") ||
-      !Resolve(manager, L"\\Device\\HarddiskVolume42\\folder\\file.dat", L"C:\\folder\\file.dat") ||
-      !Resolve(manager, L"\\Device\\HarddiskVolume42", L"C:") ||
+      !Resolve(manager, L"\\Device\\HarddiskVolume42\\folder\\file.dat", L"D:\\folder\\file.dat") ||
+      !Resolve(manager, L"\\Device\\HarddiskVolume42", L"D:") ||
       !Resolve(manager, L"\\Device\\HarddiskVolume420\\file.dat", L"#:\\Device\\HarddiskVolume420\\file.dat"))
     return 1;
 

@@ -189,6 +189,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="settings_registry.cpp" />
+    <ClCompile Include="autostart_task.cpp" />
     <ClCompile Include="interface_settings.cpp" />
     <ClCompile Include="runtime_settings.cpp" />
     <ClCompile Include="styled_button.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="settings_registry.h" />
     <ClInclude Include="settings.h" />
+    <ClInclude Include="autostart_task.h" />
     <ClInclude Include="interface_settings.h" />
     <ClInclude Include="runtime_settings.h" />
     <ClInclude Include="styled_button.h" />

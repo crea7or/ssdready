@@ -4,6 +4,24 @@
 
 #include "process_statistics.h"
 
+#include <cwctype>
+
+std::size_t ProcessStatisticsStore::NameHash::operator()(std::wstring_view name) const {
+  std::size_t hash = 2166136261u;
+  for (wchar_t character : name)
+    hash = (hash ^ static_cast<std::size_t>(std::towlower(character))) * 16777619u;
+  return hash;
+}
+
+bool ProcessStatisticsStore::NameEqual::operator()(std::wstring_view left, std::wstring_view right) const {
+  if (left.size() != right.size())
+    return false;
+  for (std::size_t index = 0; index < left.size(); ++index)
+    if (std::towlower(left[index]) != std::towlower(right[index]))
+      return false;
+  return true;
+}
+
 std::wstring ProcessStatisticsStore::NameKey(const CString& name) {
   std::wstring key(name.GetString(), name.GetLength());
   // Use the same CRT case folding as CString::CompareNoCase.
@@ -12,7 +30,7 @@ std::wstring ProcessStatisticsStore::NameKey(const CString& name) {
 }
 
 std::size_t ProcessStatisticsStore::AddWrite(const CString& name, std::uint64_t written_bytes) {
-  auto key = NameKey(name);
+  const std::wstring_view key(name.GetString(), name.GetLength());
   auto found = indexes_by_name_.find(key);
   if (found != indexes_by_name_.end()) {
     records_[found->second].written_bytes += written_bytes;
@@ -22,7 +40,7 @@ std::size_t ProcessStatisticsStore::AddWrite(const CString& name, std::uint64_t 
   const auto index = records_.size();
   records_.push_back({name, written_bytes, index});
   try {
-    indexes_by_name_.emplace(std::move(key), index);
+    indexes_by_name_.emplace(std::wstring(key), index);
   } catch (...) {
     records_.pop_back();
     throw;

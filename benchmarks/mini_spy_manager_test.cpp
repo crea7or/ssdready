@@ -94,7 +94,7 @@ void TestRecords() {
   record = Record();
   Check(record.Retrieve(manager) == 1, "Valid write is accepted");
   auto batch = manager.GetNextBatchToProcess();
-  Check(batch && batch->size() == 1 && batch->front()->file_name == L"C:\\Folder\\file.dat", "Volume mapping is preserved");
+  Check(batch && batch->size() == 1 && batch->front().file_name == L"C:\\Folder\\file.dat", "Volume mapping is preserved");
   Check(manager.GetStatistics().read_bytes == 3, "Read accounting follows publication");
 
   // A valid prefix is retained if the following record is malformed.
@@ -102,7 +102,7 @@ void TestRecords() {
   combined.insert(combined.end(), record.storage.begin(), record.storage.end());
   Check(manager.RetrieveLogRecordsBatch(combined.data(), record.bytes * 2) == 2, "Consecutive records tolerate native wire alignment");
   batch = manager.GetNextBatchToProcess();
-  Check(batch && batch->size() == 2 && batch->back()->written_bytes == 7,
+  Check(batch && batch->size() == 2 && batch->back().written_bytes == 7,
         "Copying record data preserves values across alignment boundaries");
   ULONG invalid_length = ULONG_MAX;
   std::memcpy(reinterpret_cast<char*>(combined.data()) + record.bytes, &invalid_length, sizeof(invalid_length));
@@ -137,7 +137,7 @@ void TestReparseData() {
   auto record = make_record();
   Check(record.Retrieve(manager) == 1, "Valid reparse record honors substitute offset");
   auto batch = manager.GetNextBatchToProcess();
-  Check(batch && batch->front()->file_name == L"C:\\Folder\\linked.dat", "Reparse name is translated and terminated");
+  Check(batch && batch->front().file_name == L"C:\\Folder\\linked.dat", "Reparse name is translated and terminated");
   for (const std::size_t field : {std::size_t(4), std::size_t(8), std::size_t(10)}) {
     record = make_record();
     const USHORT invalid = 0xffff;
@@ -188,6 +188,28 @@ class HistoryDirectory {
 
   CString path_;
 };
+
+void TestStructuralPaths() {
+  TestCore core;
+  auto& manager = core.manager();
+  manager.ClearData(FALSE);
+  auto lock = manager.LockData();
+  auto* uncertain = manager.GetTreeItemFromPath(CString(L"C:\\deleted-folder"));
+  uncertain->AddWrite(7);
+  auto* file = manager.GetTreeItemFromPath(CString(L"C:\\deleted-folder\\child.dat"));
+  file->AddWrite(5);
+  Check(file != uncertain && file->GetParent() == uncertain && uncertain->GetObjectType() == TreeItemType::kFolder,
+        "A former leaf becomes a folder without replacing its address");
+  Check(manager.GetTreeItemFromPath(CString(L"C:\\deleted-folder")) == uncertain && uncertain->GetWriteSizeTotal() == 12,
+        "Existing cached pointers and previous folder writes survive promotion");
+  CString long_path = L"C:\\deleted-folder\\";
+  long_path += CString(L'x', 300);
+  long_path += L"\\long.dat";
+  auto* long_file = manager.GetTreeItemFromPath(long_path);
+  Check(long_file && long_file != uncertain && long_file->GetObjectType() == TreeItemType::kFile,
+        "A long or deleted path is resolved structurally without a filesystem query");
+  Check(manager.GetItemCount() == 2 && manager.GetRootFolder()->CountFiles() == 2, "File count excludes folder and drive nodes");
+}
 
 void TestHistory() {
   TestCore core;
@@ -329,6 +351,7 @@ int main() {
       return 1;
     TestRecords();
     TestReparseData();
+    TestStructuralPaths();
     TestHistory();
     TestSnapshots();
     TestProcessingRate();

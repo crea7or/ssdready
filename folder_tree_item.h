@@ -3,7 +3,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "file_tree_item.h"
 #include "tree_item.h"
 
 class FolderTreeItem : public TreeItem {
@@ -22,19 +21,19 @@ class FolderTreeItem : public TreeItem {
 
  private:
 
-  const Children& GetChildren() const override {
-    return children_;
-  }
-
-  void ReplaceChildren(Children children) override {
-    children_ = std::move(children);
-  }
-
-  Children children_;
+  const Children& GetChildren() const override;
+  void ReplaceChildren(Children children) override;
   using ChildIndex = std::unordered_map<std::wstring, TreeItem*>;
+
+  struct Contents {
+    Children children;
+    std::unique_ptr<ChildIndex> index;
+  };
+
+  // Leaves pay for one pointer, not an empty vector and hash table.
+  std::unique_ptr<Contents> contents_;
   static std::wstring NameKey(LPCTSTR name);
   TreeItem* FindChild(LPCTSTR name);
   TreeItem* AddNewItem(LPCTSTR name, BOOL is_file);
   // Small folders use contiguous scans; large folders build their index lazily.
-  std::unique_ptr<ChildIndex> children_by_name_;
 };

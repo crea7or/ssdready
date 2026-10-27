@@ -34,8 +34,8 @@ BOOL AboutDialog::OnInitDialog() {
   text.Format(L"SsdReady Version %d.%d build %d", kVersion / 100, (kVersion - (kVersion / 100) * 100), kBuildNumber);
   SetDlgItemText(IDC_STATIC_BUILD, text);
 
-  link_corp_.SetUrl(L"http://www.cezeo.com");
-  link_ssdr_.SetUrl(L"http://www.ssdready.com");
+  link_corp_.SetUrl(L"https://www.cezeo.com");
+  link_ssdr_.SetUrl(L"https://www.ssdready.com");
   link_corp_.SetLinkCursor(AfxGetApp()->LoadCursor(IDC_CURSOR_HAND));
   link_ssdr_.SetLinkCursor(AfxGetApp()->LoadCursor(IDC_CURSOR_HAND));
 

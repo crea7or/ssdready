@@ -56,6 +56,7 @@ void TreeItem::AddWrite(DWORD64 bytes, std::optional<std::size_t> process_index)
   for (auto* node = this; node; node = node->parent_) {
     node->values_.total_with_children += bytes;
     node->description_up_to_date_ = false;
+    node->children_changed_ = true;
   }
 }
 
@@ -136,6 +137,13 @@ BOOL TreeItem::TakeTreeChildrenChanged() {
   return changed;
 }
 
+std::size_t TreeItem::CountFiles() const {
+  std::size_t count = GetObjectType() == TreeItemType::kFile ? 1 : 0;
+  for (const auto& child : GetChildren())
+    count += child->CountFiles();
+  return count;
+}
+
 BOOL TreeItem::Load(File* file) {
   NamedObject object;
   ItemValues values;
@@ -180,10 +188,12 @@ BOOL TreeItem::Load(File* file) {
     children.push_back(std::move(child));
   }
   // Commit only a complete load; failed reads leave the existing node intact.
-  Clear();
+  // Allocate folder storage before changing the existing model. Base Clear
+  // resets counters/links only; it must not discard the newly installed children.
+  ReplaceChildren(std::move(children));
+  TreeItem::Clear();
   NamedObject::operator=(object);
   values_ = values;
   process_links_ = std::move(links);
-  ReplaceChildren(std::move(children));
   return TRUE;
 }

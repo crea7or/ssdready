@@ -52,6 +52,9 @@
     <ClCompile Include="settings_registry.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
+    <ClCompile Include="autostart_task.cpp">
+      <Filter>Core Classes</Filter>
+    </ClCompile>
     <ClCompile Include="interface_settings.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="settings.h">
       <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="autostart_task.h">
+      <Filter>Core Classes</Filter>
     </ClInclude>
     <ClInclude Include="interface_settings.h">
       <Filter>Settings</Filter>

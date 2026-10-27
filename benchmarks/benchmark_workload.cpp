@@ -194,8 +194,8 @@ bool Workload::CheckProcessing(std::size_t count, DWORD64 initial_writes, DWORD6
     linked_writes += process.written_bytes;
   }
   return manager().GetRootFolder()->GetWriteSizeTotal() == manager().GetTotalWritten() && linked_writes == manager().GetTotalWritten() &&
-         manager().GetItemCount() == path_count_ + (path_count_ + 127) / 128 + 2 && count == options_.items &&
-         manager().GetUnprocessedItemsCount() == 0 && manager().GetTotalWritten() - initial_writes == written_bytes_ &&
+         manager().GetItemCount() == path_count_ && count == options_.items && manager().GetUnprocessedItemsCount() == 0 &&
+         manager().GetTotalWritten() - initial_writes == written_bytes_ &&
          manager().GetRoundedWritten() - initial_rounded == rounded_bytes_ &&
          manager().GetTotalOperations() - initial_operations == options_.items;
 }

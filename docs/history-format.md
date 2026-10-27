@@ -6,6 +6,9 @@ does not modify it. Older builds that only understand version 1 cannot read
 version 2 files. The manager writes `Monitored.Files.tmp`, closes it, and
 replaces `Monitored.Files` only after success. Invalid loads retain the previous
 in-memory model and disable saving until a successful load or explicit reset.
+After encoding, the manager checks `FlushFileBuffers` through `File::Flush()`
+before closing and replacing the destination. A flush failure retains the old
+history. The cached-I/O codec timings below do not include this durability flush.
 
 ## Version 2 layout
 

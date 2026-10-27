@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -46,5 +47,16 @@ class ProcessStatisticsStore {
 
   static std::wstring NameKey(const CString& name);
   std::vector<ProcessStatistics> records_;
-  std::unordered_map<std::wstring, std::size_t> indexes_by_name_;
+
+  struct NameHash {
+    using is_transparent = void;
+    std::size_t operator()(std::wstring_view name) const;
+  };
+
+  struct NameEqual {
+    using is_transparent = void;
+    bool operator()(std::wstring_view left, std::wstring_view right) const;
+  };
+
+  std::unordered_map<std::wstring, std::size_t, NameHash, NameEqual> indexes_by_name_;
 };

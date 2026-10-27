@@ -61,6 +61,8 @@ class TreeItem : public NamedObject {
     return GetChildren().size();
   }
 
+  std::size_t CountFiles() const;
+
   std::vector<ProcessWriteStatistics> GetProcessWrites(bool include_children) const;
 
  protected:

@@ -38,7 +38,7 @@ BOOL DriveSelectorDialog::OnInitDialog() {
   volumes_ = GetVolumes();
   if (volumes_) {
     for (const auto& drive : *volumes_) {
-      list_drives_.AddDrive(drive, drive.instances > 0);
+      list_drives_.AddDrive(drive, Core()->GetInterfaceSettings()->IsDriveSelected(drive.drive_letter.data()));
     }
   }
 
@@ -62,13 +62,15 @@ void DriveSelectorDialog::SetColumns(SortableListCtrl* list_ctrl) {
 void DriveSelectorDialog::OnBnClickedOk() {
   if (volumes_) {
     auto* manager = Core()->GetManager();
+    CString selected;
     auto lock = manager->LockDrives();
     for (auto& drive : *volumes_) {
       const int row = list_drives_.FindByData(reinterpret_cast<DWORD_PTR>(&drive));
       if (row == -1)
         continue;
       if (list_drives_.GetItemState(row, LVIS_SELECTED) & LVIS_SELECTED) {
-        if (drive.instances == 0)
+        selected += drive.drive_letter.data();
+        if (drive.instances == 0 && !manager->GetCleanUpStatus())
           manager->AttachDeviceToFilter(drive);
       } else if (drive.instances > 0) {
         manager->DetachDeviceFromFilter(drive);
@@ -76,6 +78,12 @@ void DriveSelectorDialog::OnBnClickedOk() {
     }
     // Keep this dialog's entries alive through the final paint/destruction.
     manager->UpdateVolumes(std::make_unique<DriveInfoList>(*volumes_));
+    auto* settings = Core()->GetInterfaceSettings();
+    settings->selected_drives_ = selected.IsEmpty() ? CString(InterfaceSettings::kNoSelectedDrives) : selected;
+    if (!settings->SaveSettings()) {
+      AfxMessageBox(L"Could not save drive selections. See the application log.");
+      return;
+    }
   }
   DialogBase::OnOK();
 }

@@ -105,6 +105,12 @@ void ProcessNameResolver::Maintain(TimePoint now) {
 
 void ProcessNameResolver::Resolve(DWORD id, CString& name, TimePoint now) {
   Maintain(now);
+  // Windows reserves PID 4 for System; it cannot be recycled during this boot.
+  // OpenProcess normally rejects it, so probing/snapshotting it adds no value.
+  if (id == 4) {
+    name = L"System";
+    return;
+  }
   auto found = processes_.find(id);
   if (found != processes_.end()) {
     auto& entry = found->second;

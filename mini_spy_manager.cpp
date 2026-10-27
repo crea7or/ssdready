@@ -37,16 +37,10 @@ bool MiniSpyManager::UpdateVolumes(DriveInfoListPtr new_volumes) {
   if (!new_volumes)
     return false;
 
-  DriveInfoList* expected = nullptr;
-  // Transfer ownership before publishing: the consumer may take it immediately.
-  auto* replacement = new_volumes.release();
-  if (new_volumes_ptr_.compare_exchange_strong(expected, replacement, std::memory_order_release, std::memory_order_relaxed)) {
-    return true;
-  }
-
-  // A pending update won the slot; reclaim and destroy this rejected snapshot.
-  new_volumes.reset(replacement);
-  return false;
+  // The producer and consumer each acquire sole ownership of the pointer they
+  // remove. A paused consumer must not cause newer device mappings to be lost.
+  delete new_volumes_ptr_.exchange(new_volumes.release(), std::memory_order_acq_rel);
+  return true;
 }
 
 void MiniSpyManager::ClearData(BOOL clear_tree) {
@@ -190,6 +184,8 @@ BOOL MiniSpyManager::SaveMonitoredItems() try {
   auto statistics = statistics_;
   statistics.read_bytes = GetTotalRead();
   BOOL saved = history_format::Save(file, statistics, process_statistics_, root_folder_);
+  if (saved)
+    saved = file.Flush();
   DWORD error = saved ? ERROR_SUCCESS : GetLastError();
   if (!file.Close()) {
     saved = FALSE;
@@ -268,6 +264,7 @@ BOOL MiniSpyManager::LoadMonitoredItems() try {
   root_folder_.TakeContents(std::move(root));
   process_statistics_ = std::move(processes);
   statistics_ = statistics;
+  statistics_.items = root_folder_.CountFiles();
   ResetProcessingRate();
   read_bytes_.store(statistics.read_bytes, std::memory_order_relaxed);
   items_by_path_.clear();
@@ -398,17 +395,17 @@ bool MiniSpyManager::ProcessNextLogRecord(bool wait_for_batch) {
     const auto end = (std::min)(begin + kProcessingChunkSize, batch->size());
     for (std::size_t index = begin; index < end; ++index) {
       const auto& item = (*batch)[index];
-      if (!log_files || !item->file_name.IsEmpty()) {
+      if (!log_files || !item.file_name.IsEmpty()) {
         if (log_files) {
-          auto* tree_item = GetTreeItemFromPath(item->file_name);
+          auto* tree_item = GetTreeItemFromPath(item.file_name);
           if (collect_processes) {
-            const auto process_index = process_statistics_.AddWrite(item->process_name, item->written_bytes);
-            tree_item->AddWrite(item->written_bytes, process_index);
+            const auto process_index = process_statistics_.AddWrite(item.process_name, item.written_bytes);
+            tree_item->AddWrite(item.written_bytes, process_index);
           } else {
-            tree_item->AddWrite(item->written_bytes);
+            tree_item->AddWrite(item.written_bytes);
           }
         }
-        AddTotalWritten(item->written_bytes);
+        AddTotalWritten(item.written_bytes);
       }
       ++statistics_.operations;
     }
@@ -434,9 +431,7 @@ void MiniSpyManager::ResolveProcessById(DWORD id, CString& process_name) {
 }
 
 void MiniSpyManager::VolumeToDriveName(LPCWSTR file_name, CString& drive_name) {
-  auto* pending = new_volumes_ptr_.load(std::memory_order_acquire);
-  if (pending != nullptr &&
-      new_volumes_ptr_.compare_exchange_strong(pending, nullptr, std::memory_order_acquire, std::memory_order_relaxed)) {
+  if (auto* pending = new_volumes_ptr_.exchange(nullptr, std::memory_order_acquire)) {
     volumes_ptr_.reset(pending);
   }
 
@@ -508,19 +503,24 @@ std::size_t MiniSpyManager::RetrieveLogRecordsBatch(void* buffer, DWORD bytes_re
     std::memcpy(&data, encoded + offsetof(LOG_RECORD, Data), sizeof(data));
     if (logging && data.CallbackMajorId == kWriteMajorFunction &&
         ((data.IrpFlags & kInputOperation) == 0 || std::wmemchr(name, L'$', end - name))) {
-      auto item = std::make_unique<PendingWriteEvent>();
+      auto& item = items->emplace_back();
       if (collect_processes)
-        ResolveProcessById(static_cast<DWORD>(data.ProcessId), item->process_name);
+        ResolveProcessById(static_cast<DWORD>(data.ProcessId), item.process_name);
       if (log_files)
-        VolumeToDriveName(name, item->file_name);
-      item->written_bytes = data.WriteDataLength;
+        VolumeToDriveName(name, item.file_name);
+      item.written_bytes = data.WriteDataLength;
       read_bytes += data.ReadDataLength;
-      items->push_back(std::move(item));
     }
-    if (type & RECORD_TYPE_FLAG_OUT_OF_MEMORY)
-      AppLog::Get().Add(L"Driver out of memory");
-    else if (type & RECORD_TYPE_FLAG_EXCEED_MEMORY_ALLOWANCE)
-      AppLog::Get().Add(L"Driver exceeded maximum allowed memory");
+    if (type & (RECORD_TYPE_FLAG_OUT_OF_MEMORY | RECORD_TYPE_FLAG_EXCEED_MEMORY_ALLOWANCE)) {
+      ++driver_warning_records_;
+      const auto now = std::chrono::steady_clock::now();
+      if (now - last_driver_warning_ >= std::chrono::seconds(5)) {
+        AppLog::Get().Add(
+            L"Driver memory pressure: {} flagged records since the previous warning (flags {:08x}).", driver_warning_records_, type);
+        last_driver_warning_ = now;
+        driver_warning_records_ = 0;
+      }
+    }
   }
   const auto accepted = items->size();
   if (accepted == 0)
@@ -659,16 +659,20 @@ ProcessStatisticsSnapshot MiniSpyManager::GetProcessStatistics(TreeItem* item, b
 }
 
 TreeItem* MiniSpyManager::GetTreeItemFromPath(const CString& name) {
-  std::wstring path(name.GetString(), name.GetLength());
+  const std::wstring_view path(name.GetString(), name.GetLength());
   const auto found = items_by_path_.find(path);
   if (found != items_by_path_.end())
     return found->second;
-  const DWORD attributes = GetFileAttributesW(path.c_str());
-  const BOOL is_file = attributes == INVALID_FILE_ATTRIBUTES || (attributes & FILE_ATTRIBUTE_DIRECTORY) == 0;
+  // The driver has no directory flag. Infer ancestors structurally and promote
+  // a previous leaf in place when a descendant arrives; never probe the disk.
+  const BOOL is_file = !path.empty() && path.back() != L'\\' && path.back() != L':';
   CStringArray parts;
   string_utils::Split(name, L'\\', parts);
   auto* item = root_folder_.GetItemByPath(&parts, 0, is_file);
-  items_by_path_.emplace(std::move(path), item);
+  constexpr std::size_t kMaxCachedPaths = 65536;
+  if (items_by_path_.size() >= kMaxCachedPaths)
+    items_by_path_.clear();
+  items_by_path_.emplace(std::wstring(path), item);
   return item;
 }
 

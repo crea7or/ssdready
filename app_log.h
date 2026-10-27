@@ -2,6 +2,7 @@
 
 #include <afxwin.h>
 
+#include <deque>
 #include <format>
 #include <mutex>
 #include <string_view>
@@ -21,6 +22,7 @@ class AppLog {
 
   static AppLog& Get();
   static constexpr UINT kLogUpdatedMessage = WM_APP + 20;
+  static constexpr std::size_t kMaxMessages = 4096;
   void Add(LPCTSTR message);
 
   // A single message stays literal; calls with arguments use checked {} formatting.
@@ -33,13 +35,14 @@ class AppLog {
 
   // Attach/detach on the UI thread before destroying the viewer window.
   void SetViewer(HWND viewer);
-  void CopyLog(CStringArray& messages, INT_PTR first = 0);
+  INT_PTR CopyLog(CStringArray& messages, INT_PTR first = 0, INT_PTR* retained_first = nullptr);
 
  private:
 
   AppLog() = default;
   ~AppLog() = default;
-  std::vector<CString> messages_;
+  std::deque<CString> messages_;
+  INT_PTR first_sequence_ = 0;
   std::mutex mutex_;
   HWND viewer_ = nullptr;
   bool update_posted_ = false;

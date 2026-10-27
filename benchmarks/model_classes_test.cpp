@@ -1,7 +1,6 @@
 // clang-format off
 #include "pch.h"
 // clang-format on
-
 #include <array>
 #include <cstdint>
 #include <cstring>
@@ -13,6 +12,7 @@
 #include "app_log.h"
 #include "benchmark_workload.h"
 #include "buffered_file.h"
+#include "file_tree_item.h"
 #include "monitoring_tree_ctrl.h"
 
 namespace {
@@ -201,6 +201,23 @@ void TestFolderIndexAndUi() {
   auto* file = Find(*root, {CString(L"C:"), CString(L"wide"), CString(L"file_000.dat")});
   file->AddWrite(4096, 0);
   Check(tree.GetItemText(file->GetTreeItem()).Find(L"file_000.dat") == 0, "Tree display callback uses the rewritten model");
+  auto refresh = [&] {
+    MSG message;
+    while (PeekMessage(&message, tree.GetSafeHwnd(), WM_APP, WM_APP + 64, PM_REMOVE))
+      DispatchMessage(&message);
+  };
+  auto* largest = Find(*root, {CString(L"C:"), CString(L"wide"), CString(L"file_127.dat")});
+  largest->AddWrite(8192, 0);
+  tree.NotifyItemsChanged();
+  refresh();
+  Check(tree.GetItemData(tree.GetChildItem(folder)) == reinterpret_cast<DWORD_PTR>(largest),
+        "Growing an existing file updates write-size sorting without adding children");
+  Core()->GetInterfaceSettings()->sort_tree_by_write_size_ = false;
+  tree.RefreshSortOrder();
+  refresh();
+  Check(tree.GetItemText(tree.GetChildItem(folder)).Find(L"file_000.dat") == 0,
+        "Changing sort options reorders already materialized children");
+  Core()->GetInterfaceSettings()->sort_tree_by_write_size_ = true;
   tree.DeleteAllItems();
   Core()->SetTreeControl(nullptr);
   tree.DestroyWindow();
@@ -250,6 +267,18 @@ void TestLog() {
   DestroyWindow(viewer);
 }
 
+void TestBoundedLog() {
+  auto& log = AppLog::Get();
+  for (std::size_t index = 0; index < AppLog::kMaxMessages + 100; ++index)
+    log.Add(L"Bounded log item {}", index);
+  CStringArray messages;
+  INT_PTR retained = 0;
+  const auto end = log.CopyLog(messages, 0, &retained);
+  Check(messages.GetSize() == AppLog::kMaxMessages && retained > 0, "Log evicts old messages at its fixed limit");
+  log.CopyLog(messages, end - 1);
+  Check(messages.GetSize() == 1, "Incremental log cursor remains correct after eviction");
+}
+
 void TestFormattedLog() {
   auto& log = AppLog::Get();
   CStringArray messages;
@@ -279,8 +308,8 @@ void TestFormattedLog() {
   Check(messages[3].Mid(20) == L"[     abc]", "CString supports string alignment and precision");
   Check(messages[4].Mid(20) == L"Literal %s and {braces}" && messages[5].Mid(20) == L"CString literal {braces}",
         "Single argument messages remain literal");
-  Check(messages[6].GetLength() == 20 + 6 + static_cast<int>(long_text.size()) && messages[6].Right(8192) == long_text.c_str(),
-        "Formatted messages are not truncated");
+  Check(messages[6].GetLength() == 20 + 4096 && messages[6].Right(4090) == CString(long_text.c_str(), 4090),
+        "Oversized formatted messages are bounded");
 
   const auto concurrent_first = first + messages.GetSize();
   std::vector<std::thread> writers;
@@ -345,6 +374,7 @@ int wmain(int argc, wchar_t** argv) {
       TestFolderIndexAndUi();
       TestLog();
       TestFormattedLog();
+      TestBoundedLog();
       std::cout << "Model persistence, child lookup, reset, tree UI, and plain/formatted concurrent logging passed.\n";
     }
     std::cout << "x64/Win32 sizes: NamedObject=" << sizeof(NamedObject) << "; file=" << sizeof(FileTreeItem)

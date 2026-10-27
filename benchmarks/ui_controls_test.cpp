@@ -289,6 +289,10 @@ void TestLogViewer(CWnd& parent) {
   MINMAXINFO limits{};
   dialog.SendMessage(WM_GETMINMAXINFO, 0, reinterpret_cast<LPARAM>(&limits));
   Check(limits.ptMinTrackSize.x == window.Width() && limits.ptMinTrackSize.y == window.Height(), "Viewer has a usable minimum size");
+  for (std::size_t index = 0; index < AppLog::kMaxMessages + 100; ++index)
+    AppLog::Get().Add(L"Rotation item {}", index);
+  refresh();
+  Check(list->GetCount() == AppLog::kMaxMessages, "Viewer drops evicted rows instead of growing without limit");
   dialog.DestroyWindow();
   AppLog::Get().Add(L"Log viewer closed; further logging remains safe");
 }
@@ -311,6 +315,9 @@ int main() {
     TestDialogs(parent);
     TestProcessingRateControls(parent);
     TestLogViewer(parent);
+    const auto lifetime = ui_statistics::LifetimeText(150ULL * 365 * 4096, 4096, 86400);
+    Check(lifetime == L"150.00 years" && lifetime.Find(L"e+") == -1, "Long lifetime remains readable and uses aligned daily bytes");
+    Check(ui_statistics::LifetimeText(1000, 0, 86400) == L"Calculating", "No division by zero in lifetime estimate");
     Check(ui_statistics::DailyBytes(1, 2) == 43200, "Fractional bytes/second preserved");
     Check(ui_statistics::DailyBytes(123, 0) == 0, "Zero monitoring time handled");
     Check(ui_statistics::DailyBytes(123, 86400) == 123, "One-day values unchanged");

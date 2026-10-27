@@ -5,6 +5,7 @@
 // clang-format on
 #include "options_dialog.h"
 
+#include "monitoring_tree_ctrl.h"
 #include "ssd_ready_app.h"
 
 // OptionsDialog dialog
@@ -76,9 +77,11 @@ void OptionsDialog::OnBnClickedOk() {
     return;
   }
 
+  if (auto* tree = Core()->GetTreeControl())
+    tree->RefreshSortOrder();
   OnOK();
 }
 
 void OptionsDialog::OnBnClickedButtonHelp() {
-  ShellExecute(nullptr, L"open", L"http://www.ssdready.com/help/?inref=ssdready", nullptr, nullptr, SW_SHOWNORMAL);
+  ShellExecute(nullptr, L"open", L"https://www.ssdready.com/help/?inref=ssdready", nullptr, nullptr, SW_SHOWNORMAL);
 }
