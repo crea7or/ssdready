@@ -6,6 +6,9 @@
 	#error this file is not editable by Microsoft Visual C++
 #endif //APSTUDIO_INVOKED
 
+// Generated before each build by cmake/GenerateVersion.cmake (see cmake/version.cmake)
+#include "build_version.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Add manually edited resources here...
@@ -16,8 +19,8 @@
 //
 
 VS_VERSION_INFO VERSIONINFO
-	FILEVERSION       1,40,3,67
-	PRODUCTVERSION       1,40,3,67
+ FILEVERSION SSDREADY_VERSION_MAJOR,SSDREADY_VERSION_MINOR,SSDREADY_VERSION_BUILD,0
+ PRODUCTVERSION SSDREADY_VERSION_MAJOR,SSDREADY_VERSION_MINOR,SSDREADY_VERSION_BUILD,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -34,13 +37,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "SsdReady - SSD life measurement tool\0"
-		VALUE "FileVersion",     "1, 40, 3, 67\0"
+            VALUE "FileVersion", SSDREADY_VERSION_STRING
             VALUE "InternalName", "SsdReady\0"
             VALUE "LegalCopyright", "Copyright (C) 2017\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "SsdReady.exe\0"
             VALUE "ProductName", "SsdReady Application\0"
-		VALUE "ProductVersion",     "1, 40, 3, 67\0"
+            VALUE "ProductVersion", SSDREADY_VERSION_FULL_STRING
         END
     END
     BLOCK "VarFileInfo"

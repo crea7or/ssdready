@@ -44,6 +44,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.61030.0</_ProjectFileVersion>
+    <!-- Always run the pre-build step so a new commit refreshes the version even if no source changed. -->
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)x64\$(Configuration)\</OutDir>
@@ -65,8 +67,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>set "CMAKE_EXE=$(VsInstallRoot)\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
+if not exist "%CMAKE_EXE%" set "CMAKE_EXE=cmake"
+"%CMAKE_EXE%" -DOUT_FILE="$(IntDir)generated\build_version.h" -P "$(ProjectDir)cmake\GenerateVersion.cmake"</Command>
+      <Message>Updating build_version.h from cmake\version.cmake and git</Message>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -94,9 +98,11 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(IntDir)generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir)generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Culture>0x0419</Culture>
     </ResourceCompile>
     <Link>
@@ -117,8 +123,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>set "CMAKE_EXE=$(VsInstallRoot)\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
+if not exist "%CMAKE_EXE%" set "CMAKE_EXE=cmake"
+"%CMAKE_EXE%" -DOUT_FILE="$(IntDir)generated\build_version.h" -P "$(ProjectDir)cmake\GenerateVersion.cmake"</Command>
+      <Message>Updating build_version.h from cmake\version.cmake and git</Message>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -147,9 +155,11 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(IntDir)generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir)generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Culture>0x0419</Culture>
     </ResourceCompile>
     <Link>
@@ -229,7 +239,6 @@
     <ClInclude Include="process_write_statistics.h" />
     <ClInclude Include="app_constants.h" />
     <ClInclude Include="ui_statistics.h" />
-    <ClInclude Include="build_version.h" />
 
     <ClInclude Include="minispy.h" />
     <ClInclude Include="pch.h" />

@@ -31,7 +31,7 @@ BOOL AboutDialog::OnInitDialog() {
   DialogBase::OnInitDialog();
 
   CString text;
-  text.Format(L"SsdReady Version %d.%d build %d", kVersion / 100, (kVersion - (kVersion / 100) * 100), kBuildNumber);
+  text.Format(L"SsdReady Version %d.%d build %d (%s)", kVersionMajor, kVersionMinor, kBuildNumber, kGitHash);
   SetDlgItemText(IDC_STATIC_BUILD, text);
 
   link_corp_.SetUrl(L"https://www.cezeo.com");

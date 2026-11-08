@@ -17,6 +17,14 @@ FetchContent_Declare(google_benchmark
 FetchContent_MakeAvailable(google_benchmark)
 
 set(APP_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")
+
+# build_version.h is generated on every build from cmake/version.cmake + git.
+set(VERSION_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+add_custom_target(ssdready_version
+  COMMAND "${CMAKE_COMMAND}" "-DOUT_FILE=${VERSION_DIR}/build_version.h" -P "${APP_ROOT}/cmake/GenerateVersion.cmake"
+  BYPRODUCTS "${VERSION_DIR}/build_version.h"
+  COMMENT "Updating build_version.h"
+  VERBATIM)
 set(APP_SOURCES
   pch.cpp mini_spy_manager.cpp drive_info.cpp process_name_resolver.cpp buffered_file.cpp history_format.cpp tree_item.cpp
   file.cpp file_error.cpp system_error.cpp
@@ -26,7 +34,8 @@ set(APP_SOURCES
   autostart_task.cpp interface_settings.cpp runtime_settings.cpp settings_registry.cpp)
 list(TRANSFORM APP_SOURCES PREPEND "${APP_ROOT}/")
 add_library(benchmark_runtime STATIC ${APP_SOURCES} ${APP_ROOT}/application_core.cpp benchmark_workload.cpp)
-target_include_directories(benchmark_runtime PUBLIC "${APP_ROOT}" "${CMAKE_CURRENT_LIST_DIR}")
+target_include_directories(benchmark_runtime PUBLIC "${APP_ROOT}" "${CMAKE_CURRENT_LIST_DIR}" "${VERSION_DIR}")
+add_dependencies(benchmark_runtime ssdready_version)
 target_compile_definitions(benchmark_runtime PUBLIC WIN32 UNICODE _UNICODE)
 target_compile_options(benchmark_runtime PRIVATE /W4 /Gy)
 target_link_libraries(benchmark_runtime PUBLIC benchmark::benchmark)

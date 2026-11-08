@@ -157,7 +157,6 @@
     <ClInclude Include="app_constants.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="build_version.h"><Filter>System</Filter></ClInclude>
     <ClInclude Include="ui_statistics.h">
       <Filter>Interface</Filter>
     </ClInclude>

@@ -75,6 +75,26 @@ Each configuration produces:
 Release uses static MFC and the static C++ runtime. Debug uses the matching
 Visual Studio debug runtime and dynamic MFC libraries.
 
+### Versioning
+
+The version is `MAJOR.MINOR.BUILD+HASH`, for example `1.40.370+e1ee1f9`:
+
+- `MAJOR` and `MINOR` are set in [`cmake/version.cmake`](cmake/version.cmake);
+  change them there for a release.
+- `BUILD` is `SSDREADY_BUILD_OFFSET` (367, the last build number from the old
+  counter) plus the number of commits on `HEAD`.
+- `HASH` is the short commit hash, with `-dirty` added when tracked files have
+  uncommitted changes.
+
+Before every build, `cmake/GenerateVersion.cmake` regenerates `build_version.h`
+in the intermediate directory. The file is never committed, and it is rewritten
+only when the version changes. `res/SsdReady.rc2` uses it for `VERSIONINFO`
+(`FILEVERSION` is `MAJOR,MINOR,BUILD,0`), and the About dialog shows it. The
+Visual Studio project runs the script with the CMake bundled with Visual Studio
+(the **C++ CMake tools for Windows** component), falling back to `cmake` on
+`PATH`. CI must clone the full history, not a shallow clone, or the commit count
+is wrong.
+
 ## Run and monitor
 
 After building Release, use an **elevated PowerShell** at the repository root:
@@ -144,6 +164,7 @@ implemented fixes, and the remaining startup/retention and driver-contract work.
 | `DriverInstaller/` | Driver service installation/removal utility |
 | `drivers/` | Prebuilt driver binaries; use `drivers/x64/` with current builds |
 | `benchmarks/` | Shared-production-code benchmarks and regression tests |
+| `cmake/` | Version definition and `build_version.h` generator |
 | `docs/` | History format and measured performance details |
 | `res/` | Application icons and other resources |
 

@@ -75,7 +75,7 @@ BOOL MainDialog::OnInitDialog() {
 
   start_stop_.SetIcon(IDI_ICON_START);
   estimate_.SetIcon(IDI_ICON_MEASURE);
-  buy_.SetIcon(IDI_ICON_BUY);
+  buy_.SetIcon(IDI_ICON_HELP);
   options_.SetIcon(IDI_ICON_SETTINGS);
   processes_.SetIcon(IDI_ICON_PROCESSES);
   menu_.SetIcon(IDI_ICON_MENU);
