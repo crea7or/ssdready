@@ -84,8 +84,6 @@ IDI_ICON_MENU           ICON                    "res\\menu.ico"
 
 IDI_ICON_DRIVES         ICON                    "res\\drives.ico"
 
-IDI_ICON_BUY            ICON                    "res\\buy.ico"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //

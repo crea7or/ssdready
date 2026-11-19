@@ -61,6 +61,15 @@ class TreeItem : public NamedObject {
     return GetChildren().size();
   }
 
+  const TreeItem* GetChild(std::size_t index) const {
+    return GetChildren()[index].get();
+  }
+
+  // This node's own writes per process, excluding its children.
+  const std::vector<ProcessWriteStatistics>& GetDirectProcessWrites() const {
+    return process_links_;
+  }
+
   std::size_t CountFiles() const;
 
   std::vector<ProcessWriteStatistics> GetProcessWrites(bool include_children) const;

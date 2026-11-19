@@ -156,6 +156,49 @@ tests do not install the driver or validate live kernel-driver operation.
 See the [October code audit](docs/code-audit-2026-10.md) for confirmed findings,
 implemented fixes, and the remaining startup/retention and driver-contract work.
 
+## Export history to JSON
+
+`tools/history_export` reads a saved history (version 1 or 2) with the
+application's own codec and writes JSON keyed by process name:
+
+```json
+{
+  "chrome.exe": {"total_written_bytes": 121541658068, "files": {
+    "C:\\Users\\me\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\": ["History", "Cookies"],
+    "...": ["..."]
+  }}
+}
+```
+
+`total_written_bytes` is the process's total from the history. `files` maps each
+folder path to the names the process wrote in it, each once, in tree order;
+folder path plus name is the full path. History slots with the same executable
+name, ignoring case, are merged. Processes are sorted by total, largest first.
+
+- `--include-folders` also lists folders that received writes directly. Their
+  names end with `\`; `""` stands for a write to the folder itself.
+- `--folders-only` replaces `files` with `folders`: a list of each folder where
+  the process wrote, once. That means folders containing a written file, plus
+  folders written directly. It cannot be combined with `--include-folders`.
+- `--flat` writes `files` as a list of full paths instead of grouping by folder.
+
+The driver truncates paths longer than about 219 characters, so such entries
+appear cut off.
+
+```powershell
+cmake -S tools/history_export -B build/history-export -G "Visual Studio 17 2022" -A x64
+cmake --build build/history-export --config Release
+.\build\history-export\Release\history_export.exe history.json
+.\build\history-export\Release\history_export.exe "D:\backup\Monitored.Files" history.json
+.\build\history-export\Release\history_export.exe --folders-only folders.json
+```
+
+With one argument the tool reads
+`%APPDATA%\CEZEO software\SsdReady\Monitored.Files`. The history file is opened
+read-only. For a 105 MB history with 16 million items, the default output is
+262 MB (about 13 seconds), `--flat` is 1.15 GB (about 30 seconds) and
+`--folders-only` is 46 MB (about 8 seconds).
+
 ## Repository layout
 
 | Location | Contents |
@@ -165,6 +208,7 @@ implemented fixes, and the remaining startup/retention and driver-contract work.
 | `drivers/` | Prebuilt driver binaries; use `drivers/x64/` with current builds |
 | `benchmarks/` | Shared-production-code benchmarks and regression tests |
 | `cmake/` | Version definition and `build_version.h` generator |
+| `tools/history_export/` | Command-line export of a saved history to JSON |
 | `docs/` | History format and measured performance details |
 | `res/` | Application icons and other resources |
 
